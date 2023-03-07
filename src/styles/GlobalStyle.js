@@ -59,6 +59,7 @@ const GlobalStyle = createGlobalStyle`
 
     * {
         box-sizing: border-box;
+		max-width: 100%;
     }
 `
 

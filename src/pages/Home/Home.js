@@ -1,8 +1,10 @@
 import { Container, ImageDiv, PostDiv, PostButton, PostForm, PostInput, PostsContainer, Title } from "./styled"
 import axios from "axios"
+import styled from "styled-components";
 import Header from "../../components/Header";
 import Post from "../../components/Post/Post"
 import { useState } from "react";
+import TrendingBar from "../../components/TrendingBar";
 
 
  export default function Home() {
@@ -47,8 +49,9 @@ import { useState } from "react";
     return (
         <Container>
             <Header></Header>
-            <Title>Timeline</Title>
+           <LeftColumn> 
             <PostsContainer>
+            <Title>Timeline</Title>
                 <PostDiv>
                     <ImageDiv>
                         <img src="http://cbissn.ibict.br/images/phocagallery/galeria2/thumbs/phoca_thumb_l_image04_grd.png" alt="profile picture">
@@ -84,6 +87,13 @@ import { useState } from "react";
             <PostsContainer>
                 {posts.length? posts.map((post) => <Post post={post}></Post>) : <p>There are no posts yet</p>}
             </PostsContainer>
+            </LeftColumn>
+            <TrendingBar/>
         </Container>
     )
 }
+
+const LeftColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+`
