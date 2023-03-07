@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import { SignUp } from "./pages/Signup";
+import { Enter } from "./pages/Enter";
 
 function App() {
   return (
@@ -9,7 +9,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-up" element={<Enter mode="signup"/>} />
+          <Route path="/" element={<Enter mode="signin"/>} />
         </Routes>
       </BrowserRouter>
     </Linkr>

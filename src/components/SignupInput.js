@@ -1,0 +1,158 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+export function SignUpInput() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [disabled, setDisabled] = useState(false);
+
+  const navigate = useNavigate();
+
+  // const { setUserInfos, setIsLoggedIn } = useContext(Context);
+
+  function handleSignup() {
+    if (
+      email === ''
+      || password === ''
+      || name === ''
+      || imageUrl === ''
+    ) return alert('Algum campo está vazio');
+  };
+
+  async function signup(e) {
+    e.preventDefault();
+    setDisabled(true);
+
+    const postData = {
+      email,
+      password,
+      name,
+      imageUrl
+    };
+
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}/sign-up`, postData);
+
+      navigate('/');
+    } catch (error) {
+      if (error.response.status === 401) {
+        alert('E-mail ou senha inválidos!');
+      } else {
+        if (error.response.status === 409) return alert('Email já cadastrado');
+        console.log(error)
+        alert(error.message.data);
+      }
+      setDisabled(false);
+    }
+    setDisabled(false);
+  }
+
+  return (
+    <FormStyled onSubmit={(e) => signup(e)}>
+      <input
+        placeholder="email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        disabled={!disabled ? false : true}
+      />
+      <input
+        placeholder="password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        disabled={!disabled ? false : true}
+      />
+      <input
+        placeholder="username"
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+        disabled={!disabled ? false : true}
+      />
+      <input
+        placeholder="picture url"
+        type="text"
+        value={imageUrl}
+        onChange={(e) => setImageUrl(e.target.value)}
+        required
+        disabled={!disabled ? false : true}
+      />
+      <ButtonStyled
+        onClick={handleSignup}
+        disabled={!disabled ? false : true}
+      >
+        <p>SignUp</p>
+      </ButtonStyled>
+      <button
+        type="button"
+        onClick={() => navigate('/')}
+      >
+        Switch back to log in
+      </button>
+    </FormStyled>
+  );
+}
+
+const ButtonStyled = styled.button`
+  background-color: #1877F2;
+  width: 100%;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+  border-radius: 8px;
+
+  &:disabled {
+    opacity: 0.3;
+  }
+`;
+
+const FormStyled = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+
+  & > button:last-of-type {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    color: white;
+  }
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 55px;
+    border: none;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 0 18px;
+    color: #49ad0d;
+    font-size: 22px;
+    margin-bottom: 14px;
+
+    @media (max-width: 1315px) {
+      width: 80%;
+    }
+
+    @media (max-width: 800px) {
+      height: 45px;
+    }
+  }
+  input::placeholder {
+    font-size: 22px;
+    color: #9f9f9f;
+  }
+`;
