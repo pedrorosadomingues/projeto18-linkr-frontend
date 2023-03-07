@@ -6,14 +6,14 @@ export default function Header() {
             <h1>linkr</h1>
             <ProfileImageContainer>
                 <ion-icon name="chevron-down-outline"></ion-icon>
-                <img src="https://www.guiaviagensbrasil.com/imagens/lindos-coqueiros-praia-itanhaem-sp.jpg"/>
+                <img src="https://img1.gratispng.com/20180722/ybz/kisspng-user-profile-2018-in-sight-user-conference-expo-5b554c09380f76.0349129615323166812296.jpg"/>
             </ProfileImageContainer >
         </HeaderContainer>
     );
 }
 
 const HeaderContainer = styled.header`
-    width: 100%;
+    width: 100vw;
     height: 70px;
     background-color: #151515;
     position: fixed;

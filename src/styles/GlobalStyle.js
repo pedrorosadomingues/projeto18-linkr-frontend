@@ -44,5 +44,8 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+* {
+	max-width: 100%;
+}
 `
 export default GlobalStyle;
