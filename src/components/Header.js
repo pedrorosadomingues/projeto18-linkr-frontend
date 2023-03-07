@@ -80,13 +80,14 @@ const HeaderContainer = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0px 28px;
     z-index: 10;
     h1 {
-      font-family: 'Passion One', cursive;
-      color: #FFF;
-      font-size: 49px;
-      line-height: 54px;
-      letter-spacing: 0.05em;
+        font-family: 'Passion One', cursive;
+        color: #FFF;
+        font-size: 49px;
+        line-height: 54px;
+        letter-spacing: 0.05em;
     }
 
 `;

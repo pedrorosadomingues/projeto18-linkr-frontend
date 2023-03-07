@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home/Home";
 import { Enter } from "./pages/Enter";
+import Home from "./pages/Home/Home";
 
 function App() {
   return (
