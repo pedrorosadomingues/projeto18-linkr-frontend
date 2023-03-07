@@ -19,7 +19,6 @@ export function SignUpInput() {
       email === ''
       || password === ''
       || name === ''
-      || imageUrl === ''
     ) return alert('Algum campo está vazio');
   };
 
@@ -82,7 +81,6 @@ export function SignUpInput() {
         type="text"
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
-        required
         disabled={!disabled ? false : true}
       />
       <ButtonStyled
