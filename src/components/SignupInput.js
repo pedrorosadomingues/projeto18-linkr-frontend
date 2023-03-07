@@ -101,7 +101,7 @@ export function SignUpInput() {
   );
 }
 
-const ButtonStyled = styled.button`
+export const ButtonStyled = styled.button`
   background-color: #1877F2;
   width: 100%;
   color: white;
@@ -114,7 +114,7 @@ const ButtonStyled = styled.button`
   }
 `;
 
-const FormStyled = styled.form`
+export const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
