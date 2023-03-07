@@ -17,6 +17,7 @@ function App() {
 const Linkr = styled.div`
   background-color: #333333;
   height: 100vh;
+  width: 100vw;
 
 `;
 

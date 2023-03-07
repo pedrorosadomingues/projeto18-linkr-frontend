@@ -27,6 +27,7 @@ const HeaderContainer = styled.header`
         font-family: 'Passion One', cursive;
         font-size: 51px;
         color: #FFF;
+        margin-left: 15px;
     }
 
 `;
@@ -43,7 +44,7 @@ const ProfileImageContainer = styled.div`
         height: 51px;
         border-radius: 50%;
         margin-left: 18px;
-        
+
     }
 
 `
