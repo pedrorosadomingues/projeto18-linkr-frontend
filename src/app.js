@@ -5,15 +5,15 @@ import Home from "./pages/Home/Home";
 
 function App() {
   return (
-    <Linkr>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/sign-up" element={<Enter mode="signup"/>} />
-          <Route path="/" element={<Enter mode="signin"/>} />
-        </Routes>
-      </BrowserRouter>
-    </Linkr>
+      <Linkr>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/sign-up" element={<Enter mode="signup" />} />
+            <Route path="/" element={<Enter mode="signin" />} />
+          </Routes>
+        </BrowserRouter>
+      </Linkr>
   );
 }
 
