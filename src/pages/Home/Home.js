@@ -92,13 +92,11 @@ export default function Home() {
   }
 
   function openModal(id) {
-    console.log('PostId: ', postId, id)
     setIsOpen(true);
   }
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    console.log('PostId after openModal:', postId);
     subtitle.style.color = 'white';
   }
 
@@ -111,13 +109,12 @@ export default function Home() {
   async function deletePost() {
     setLoaded(true);
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/timelin/${postId}`, config);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/timeline/${postId}`, config);
     } catch (error) {
       closeModal(true);
     }
     setLoaded(false);
     closeModal();
-    console.log(postId)
   };
 
   return (
