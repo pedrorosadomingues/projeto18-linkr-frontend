@@ -18,11 +18,13 @@ export const ImageDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
   img{
     width:50px;
     height:50px;
     border-radius: 50%;
     margin-bottom: 15px;
+    object-fit: cover;
   }
 
 `
@@ -62,4 +64,42 @@ export const MetadataDiv = styled.div`
     width: 100%;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
+    display:flex;
+`
+
+export const MetaImg = styled.img`
+  border-radius: 0px 12px 13px 0px;
+  max-width: 150px;
+  width:100%;
+  max-height: 100%;
+  object-fit: contain;
+`
+
+export const MetaInfo = styled.div`
+  max-width: 70%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 19px;
+  font-family: 'Lato';
+  h2{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #CECECE;
+  margin-bottom: 5px;
+  }
+  h3{
+    font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #9B9595;
+  margin-bottom: 10px;
+  }
+  h4{
+    font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #CECECE;
+  }
 `
