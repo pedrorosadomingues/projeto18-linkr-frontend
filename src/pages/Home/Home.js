@@ -5,7 +5,6 @@ import Header from "../../components/Header";
 import Post from "../../components/Post/Post"
 import { useContext, useEffect, useRef, useState } from "react";
 import TrendingBar from "../../components/TrendingBar";
-import { AuthContext } from "../../contexts/AuthContext";
 import Modal from 'react-modal';
 
 Modal.setAppElement(document.getElementById('root'));
@@ -15,7 +14,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [posts, setPosts] = useState([]);
-  const { token } = useContext(AuthContext);
+  const token = JSON.parse(localStorage.getItem('token'));
   const [user, setUser] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
   const [postId, setPostId] = useState(undefined);
@@ -51,11 +50,10 @@ export default function Home() {
   }
 
   useEffect(() => {
+    
     axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
       .then((res) => {
-        console.log(res.data)
-        setUser(res.data)
-
+        setUser(res.data);
       })
       .catch((err) => {
         console.log(err)
@@ -80,7 +78,6 @@ export default function Home() {
     const body = { ...form }
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, config);
-      console.log("funcionou");
       setIsLoading(false);
       setForm({ url: "", description: "" });
       setLoaded(false);
@@ -174,7 +171,8 @@ export default function Home() {
           </PostDiv>
         </PostsContainer>
         <PostsContainer>
-          {posts.length ? posts.map((post) => <Post key={post.post_id} loaded={loaded} setLoaded={setLoaded} config={config} post={post} postId={post.post_id} deletePost={() => {
+          {posts.length ? posts.map((post) => <Post key={post.post_id} user={user} token={token}
+          loaded={loaded} setLoaded={setLoaded} config={config} post={post} postId={post.post_id} deletePost={() => {
             setPostId(post.post_id);
             openModal(post.post_id);
           }}></Post>)
