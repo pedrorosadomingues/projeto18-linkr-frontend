@@ -31,7 +31,10 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
     setLoaded(true);
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/timeline/${postId}`, {text}, config);
+      setEditing(false);
     } catch (error) {
+      alert('Não foi possível alterar o post')
+      throw new Error(error)
     }
     setLoaded(false);
   };
@@ -42,7 +45,6 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
     }
     if (event.key === 'Enter') {
       await editPost(postRef.current.innerText);
-      setEditing(false);
     }
   };
 
@@ -66,7 +68,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       </ImageDiv>
       <InfoDiv>
         <UserName>{post.user_name}</UserName>
-        <InfoDescription ref={postRef} onKeyDown={handleKeyDown}>{post.post_description}</InfoDescription>
+        <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}>{post.post_description}</InfoDescription>
         <MetadataDiv onClick={() => redirect(post.metadata_info.url)}>
           <MetaInfo>
             <h2>{post.metadata_info.title}</h2>
