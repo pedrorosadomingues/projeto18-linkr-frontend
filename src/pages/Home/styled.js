@@ -110,3 +110,19 @@ export const PostButton = styled.button`
   color: #FFFFFF;
   border: none;
 `
+
+export const LoadingParagraph = styled.p`
+  width: 100%;
+  font-size: 40px;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+`
+
+export const NoPosts = styled.p`
+  width: 100%;
+  font-size: 30px;
+  color: #fff;
+  line-height: 15px;
+  text-align: center;
+`

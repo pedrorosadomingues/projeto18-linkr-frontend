@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Header() {
+export default function Header({user}) {
   const [showLogout, setShowLogout] = useState(false);
+  
 
   const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ export default function Header() {
     }
   }
 
+
   return (
     <HeaderContainer>
       <h1>linkr</h1>
@@ -44,7 +46,7 @@ export default function Header() {
           type="button"
           onClick={() => setShowLogout(!showLogout)}
         >
-          <img src="https://www.guiaviagensbrasil.com/imagens/lindos-coqueiros-praia-itanhaem-sp.jpg" />
+          <img src={user.imageUrl} />
         </button>
       </ProfileImageContainer >
       <LogoutStyled
