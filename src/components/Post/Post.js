@@ -9,7 +9,8 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   const [editing, setEditing] = useState(false);
   const [liked, setLiked] = useState(false)
 
-  // console.log(config);
+  console.log('Post:', post.user_id);
+  console.log('User: ', user.id);
 
   useEffect(() => {
     // console.log('Editing??', editing)
@@ -60,7 +61,6 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
 
   async function editPost(text) {
     console.log('EDIT');
-    console.log(config);
     setLoaded(true);
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/timeline/${postId}`, {text}, config);
@@ -84,11 +84,13 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   return (
     <PostDiv>
       <TrashStyled
+        display={user.id === post.user_id}
         onClick={deletePost}
       >
         <ion-icon name="trash"></ion-icon>
       </TrashStyled>
       <EditStyled
+        display={user.id === post.user_id}
         onClick={() => setEditing(!editing)}
       >
         <ion-icon name="pencil"></ion-icon>

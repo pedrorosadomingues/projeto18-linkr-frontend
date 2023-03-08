@@ -112,6 +112,7 @@ export const TrashStyled = styled.button`
   background-color: transparent;
   border: none;
   font-size: 20px;
+  display: ${({display}) => display ? 'block' : 'none'};
 `;
 
 export const EditStyled = styled.button`
@@ -121,4 +122,5 @@ export const EditStyled = styled.button`
   background-color: transparent;
   border: none;
   font-size: 20px;
+  display: ${({display}) => display ? 'block' : 'none'};
 `;
