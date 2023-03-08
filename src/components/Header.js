@@ -2,11 +2,19 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import jwt from "jsonwebtoken";
 
 export default function Header() {
+  let key = 'linkrtoken';
+  
+  //let decodedToken = jwt.verify(localStorage.getItem(key), 'linkr');
+  //console.log(decodedToken);
   const [showLogout, setShowLogout] = useState(false);
+  const [userImage, setUserImage] = useState(false);
 
   const navigate = useNavigate();
+
+  
 
   async function logout() {
     setShowLogout(!showLogout);

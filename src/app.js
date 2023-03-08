@@ -8,7 +8,7 @@ function App() {
       <Linkr>
         <BrowserRouter>
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/timeline" element={<Home />} />
             <Route path="/sign-up" element={<Enter mode="signup" />} />
             <Route path="/" element={<Enter mode="signin" />} />
           </Routes>
