@@ -34,6 +34,12 @@ export default function Header({user}) {
 
   return (
     <HeaderContainer>
+      <WallStyled
+        showLogout={showLogout}
+        onClick={() => setShowLogout(false)}
+      >
+
+      </WallStyled>
       <h1>linkr</h1>
       <ProfileImageContainer>
         <button
@@ -59,6 +65,16 @@ export default function Header({user}) {
     </HeaderContainer>
   );
 }
+
+const WallStyled = styled.button`
+  position: absolute;
+  top: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: transparent;
+  border: none;
+  display: ${({ showLogout }) => showLogout ? 'block' : 'none'};
+`;
 
 const LogoutStyled = styled.button`
     position: absolute;
