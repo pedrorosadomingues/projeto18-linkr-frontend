@@ -62,6 +62,7 @@ export const UserName = styled.p`
 
 export const MetadataDiv = styled.div`
     min-height: 155px;
+    max-width: 503px;
     width: 100%;
     border: 1px solid #4D4D4D;
     border-radius: 11px;

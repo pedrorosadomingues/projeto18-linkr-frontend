@@ -1,4 +1,6 @@
 import styled from "styled-components"
+import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
 
 export const Container = styled.div`
   width: 100vw;
@@ -126,3 +128,14 @@ export const NoPosts = styled.p`
   line-height: 15px;
   text-align: center;
 `
+ export const LikeOutline = styled(AiOutlineHeart)`
+  color: #ffffff;
+  width:25px;
+  height: 25px;
+`;
+
+export const LikeFilled = styled(AiFillHeart)`
+  color: red;
+  width:25px;
+  height: 25px;
+`;
