@@ -112,3 +112,12 @@ export const TrashStyled = styled.button`
   border: none;
   font-size: 20px;
 `;
+
+export const EditStyled = styled.button`
+  position: absolute;
+  right: 55px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+`;

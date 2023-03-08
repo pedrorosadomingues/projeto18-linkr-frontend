@@ -3,7 +3,7 @@ import axios from "axios"
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Post from "../../components/Post/Post"
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import TrendingBar from "../../components/TrendingBar";
 import { AuthContext } from "../../contexts/AuthContext";
 import Modal from 'react-modal';
@@ -174,7 +174,7 @@ export default function Home() {
           </PostDiv>
         </PostsContainer>
         <PostsContainer>
-          {posts.length ? posts.map((post) => <Post key={post.post_id} post={post} deletePost={() => {
+          {posts.length ? posts.map((post) => <Post key={post.post_id} loaded={loaded} setLoaded={setLoaded} config={config} post={post} postId={post.post_id} deletePost={() => {
             setPostId(post.post_id);
             openModal(post.post_id);
           }}></Post>)
