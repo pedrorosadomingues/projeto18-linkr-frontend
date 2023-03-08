@@ -8,6 +8,7 @@ export const PostDiv = styled.div`
   padding: 20px 23px;
   display:flex;
   font-family: 'Lato';
+  position: relative;
   @media (max-width: 600px){
     border-radius: 0px;
 }
@@ -103,3 +104,11 @@ export const MetaInfo = styled.div`
   color: #CECECE;
   }
 `
+export const TrashStyled = styled.button`
+  position: absolute;
+  right: 15px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+`;
