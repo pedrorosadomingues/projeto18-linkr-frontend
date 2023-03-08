@@ -1,17 +1,22 @@
 import { EditStyled, ImageDiv, InfoDescription, InfoDiv, Likes, MetadataDiv, MetaImg, MetaInfo, PostDiv, TrashStyled, UserName } from "./styled"
-import { AiOutlineHeart } from "react-icons/ai";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { LikeFilled, LikeOutline } from "../../pages/Home/styled";
 
 
-export default function Post({ post, deletePost, postId, loaded, setLoaded, config }) {
+export default function Post({ post, deletePost, postId, loaded, setLoaded, config, user, token }) {
   const postRef = useRef(null);
   const [editing, setEditing] = useState(false);
+  const [liked, setLiked] = useState(false)
 
-  // console.log(config);
+  console.log('Post:', post.user_id);
+  console.log('User: ', user.id);
 
   useEffect(() => {
     // console.log('Editing??', editing)
+    const found = post.liked_by_users.find((obj) => obj.user_id === user.id)
+    if (found) setLiked(true)
+
     if (!editing) {
       postRef.current.innerText = post.post_description;
       postRef.current.contentEditable = false;
@@ -25,9 +30,37 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
     window.open(url, '_blank');
   }
 
+  async function likePost(postId){
+    
+    try {
+      await  axios.post(`${process.env.REACT_APP_API_URL}/like`, {postId}, config);
+      setLiked(true)
+      setLoaded(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function unlikePost(postId){
+    const authorizationToken = `Bearer ${token}`
+    try {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/unlike`, {
+        headers: {
+          Authorization: authorizationToken
+        },
+        data: {
+          postId
+        }
+      });
+      setLiked(false)
+      setLoaded(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async function editPost(text) {
     console.log('EDIT');
-    console.log(config);
     setLoaded(true);
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/timeline/${postId}`, {text}, config);
@@ -51,20 +84,23 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   return (
     <PostDiv>
       <TrashStyled
+        display={user.id === post.user_id}
         onClick={deletePost}
       >
         <ion-icon name="trash"></ion-icon>
       </TrashStyled>
       <EditStyled
+        display={user.id === post.user_id}
         onClick={() => setEditing(!editing)}
       >
         <ion-icon name="pencil"></ion-icon>
       </EditStyled>
       <ImageDiv>
-        <img src={post.user_image_url} alt="Profile Picture" />
-        <AiOutlineHeart size={25} style={{ color: '#ffffff', marginBottom: '10px' }} />
+        <img src={post.user_image_url} alt="Profile" />
+        {liked ? <LikeFilled onClick={()=>unlikePost(post.post_id)}/> : <LikeOutline onClick={()=>likePost(post.post_id)} />}
+        
 
-        <Likes>{post.like_count} likes</Likes>
+        <Likes>{post.like_count} {post.like_count === 1? "like":"likes"}</Likes>
       </ImageDiv>
       <InfoDiv>
         <UserName>{post.user_name}</UserName>

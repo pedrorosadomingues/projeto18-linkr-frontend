@@ -62,6 +62,7 @@ export const UserName = styled.p`
 
 export const MetadataDiv = styled.div`
     min-height: 155px;
+    max-width: 503px;
     width: 100%;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
@@ -111,6 +112,7 @@ export const TrashStyled = styled.button`
   background-color: transparent;
   border: none;
   font-size: 20px;
+  display: ${({display}) => display ? 'block' : 'none'};
 `;
 
 export const EditStyled = styled.button`
@@ -120,4 +122,5 @@ export const EditStyled = styled.button`
   background-color: transparent;
   border: none;
   font-size: 20px;
+  display: ${({display}) => display ? 'block' : 'none'};
 `;
