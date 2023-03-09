@@ -16,6 +16,7 @@ function App() {
             <Route path="/sign-up" element={<Enter mode="signup" />} />
             <Route path="/" element={<Enter mode="signin" />} />
             <Route path="/hashtag/:hashtag" element={<Home />} />
+            <Route path="/user/:id" element={<Home />} />
           </Routes>
           </AuthProvider>
         </BrowserRouter>

@@ -6,6 +6,7 @@ import Post from "../../components/Post/Post"
 import { useContext, useEffect, useRef, useState } from "react";
 import TrendingBar from "../../components/TrendingBar";
 import Modal from 'react-modal';
+import { useLocation } from "react-router-dom";
 
 Modal.setAppElement(document.getElementById('root'));
 
@@ -18,6 +19,8 @@ export default function Home() {
   const [user, setUser] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
   const [postId, setPostId] = useState(undefined);
+  const [userFromQuery, setUserFromQuery] = useState(null);
+  const location = useLocation();
   let subtitle;
   const config = {
     headers: {
@@ -45,12 +48,42 @@ export default function Home() {
     },
   };
 
+  async function getUserById(id) {
+    const token = JSON.parse(localStorage.getItem('token'));
+
+    if (token && token !== '') {
+      try {
+        const config = {
+          headers: {
+            authentication: `Bearer ${token}`,
+          }
+        };
+        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-by-id`, { id }, config);
+        console.log('Data from id', data)
+        setUserFromQuery(data[0]);
+
+      } catch (error) {
+        console.log(error);
+
+        throw new Error(error);
+      }
+    }
+  };
+
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   useEffect(() => {
-    
+    const { pathname } = location;
+
+    if (pathname.includes('user')) {
+      const index = pathname.lastIndexOf("/");
+      const result = pathname.substring(index + 1);
+
+      getUserById(Number(result));
+    }
+
     axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
       .then((res) => {
         setUser(res.data);
@@ -92,56 +125,56 @@ export default function Home() {
     setIsOpen(true);
   }
 
-    useEffect(()=> {
-        axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
-        .then((res) =>{
-            // console.log(res.data)
-            setUser(res.data)
-           
-        })
-        .catch((err) =>{
-            console.log(err)
-            alert("You are not logged!");
-        })
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
+      .then((res) => {
+        // console.log(res.data)
+        setUser(res.data)
 
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
-        promise.then((res) =>{
-            console.log(res.data)
-            setPosts(res.data)
-            setLoaded(true)
-        })
-        .catch((err) =>{
-            console.log(err)
-            alert("An error occured while trying to fetch the posts, please refresh the page");
-        })
-    }, [loaded])
+      })
+      .catch((err) => {
+        console.log(err)
+        alert("You are not logged!");
+      })
 
-    async function handlePost(e) {
-        e.preventDefault();
-        let getHashtags = form.description.match(/#[a-zA-Z0-9]+/g);
-        console.log('getHashtags:', getHashtags)
-        
-        setIsLoading(true);
-        const body = {...form}
-        try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, config);
-            console.log("funcionou");
-            if( getHashtags?.length > 0){
-                getHashtags.forEach( async (h) => {    
-                   await axios.post(`${process.env.REACT_APP_API_URL}/hashtag`, {h}, config)
-                })
-            }
-            setIsLoading(false);
-            setForm({ url: "", description: "" });
-            setLoaded(false);
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error);
-            alert("There was an error publishing your link")
-        }
+    const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
+    promise.then((res) => {
+      console.log(res.data)
+      setPosts(res.data)
+      setLoaded(true)
+    })
+      .catch((err) => {
+        console.log(err)
+        alert("An error occured while trying to fetch the posts, please refresh the page");
+      })
+  }, [loaded])
+
+  async function handlePost(e) {
+    e.preventDefault();
+    let getHashtags = form.description.match(/#[a-zA-Z0-9]+/g);
+    // console.log('getHashtags:', getHashtags)
+
+    setIsLoading(true);
+    const body = { ...form }
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, config);
+      console.log("funcionou");
+      if (getHashtags?.length > 0) {
+        getHashtags.forEach(async (h) => {
+          await axios.post(`${process.env.REACT_APP_API_URL}/hashtag`, { h }, config)
+        })
+      }
+      setIsLoading(false);
+      setForm({ url: "", description: "" });
+      setLoaded(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+      alert("There was an error publishing your link")
     }
-    
-      function afterOpenModal() {
+  }
+
+  function afterOpenModal() {
     // references are now sync'd and can be accessed.
     subtitle.style.color = 'white';
   }
@@ -186,8 +219,8 @@ export default function Home() {
       </Modal>
       <LeftColumn>
         <PostsContainer>
-          <Title>Timeline</Title>
-          <PostDiv>
+          <Title>{location.pathname?.includes('user') ? userFromQuery?.name + "'s posts" : 'Timeline'}</Title>
+          {!location.pathname?.includes('user') && <PostDiv>
             <ImageDiv>
               <img src={user.imageUrl} alt="profile picture">
               </img>
@@ -217,18 +250,51 @@ export default function Home() {
                 {isLoading ? "Publishing..." : "Publish"}
               </PostButton>
             </PostForm>
-          </PostDiv>
+          </PostDiv>}
         </PostsContainer>
         <PostsContainer>
-          {posts.length ? posts.map((post) => <Post key={post.post_id} user={user} token={token}
-          loaded={loaded} setLoaded={setLoaded} config={config} post={post} postId={post.post_id} posts={posts} setPosts={setPosts}deletePost={() => {
-            setPostId(post.post_id);
-            openModal(post.post_id);
-          }}></Post>)
+          {posts.length ? posts.map((post) => (
+            location.pathname?.includes('user') && location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1) === String(post.user_id) ?
+              <Post
+                key={post.post_id}
+                user={user}
+                token={token}
+                loaded={loaded}
+                setLoaded={setLoaded}
+                config={config}
+                post={post}
+                postId={post.post_id}
+                posts={posts}
+                setPosts={setPosts}
+                deletePost={() => {
+                  setPostId(post.post_id);
+                  openModal(post.post_id);
+                }}>
+
+              </Post> :
+              location.pathname?.includes('user') ? null :
+                <Post
+                  key={post.post_id}
+                  user={user}
+                  token={token}
+                  loaded={loaded}
+                  setLoaded={setLoaded}
+                  config={config}
+                  post={post}
+                  postId={post.post_id}
+                  posts={posts}
+                  setPosts={setPosts}
+                  deletePost={() => {
+                    setPostId(post.post_id);
+                    openModal(post.post_id);
+                  }}>
+
+                </Post>
+          ))
             : loaded ? <NoPosts>There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
       </LeftColumn>
-    <TrendingBar></TrendingBar>
+      <TrendingBar></TrendingBar>
     </Container>
   )
 }

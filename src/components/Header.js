@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
-import { useNavigate } from "react-router-dom";
+import { useHistory, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Header({ user }) {
@@ -89,10 +89,13 @@ export default function Header({ user }) {
         display={(search.length > 3).toString()}
       >
         {
-          users?.map(({imageUrl, name}, index) => (
+          users?.map(({imageUrl, name, id}, index) => (
             <UserFromSearch key={index}>
               <img alt="profile" src={imageUrl}/>
-              <p>{name}</p>
+              <button onClick={() => {
+                navigate(`/user/${id}`)
+                window.location.reload();
+              }}>{name}</button>
             </UserFromSearch>
           ))
         }
