@@ -62,7 +62,7 @@ export default function Home() {
 
     const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
     promise.then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
       setPosts(res.data)
       setLoaded(true)
     })
@@ -95,7 +95,7 @@ export default function Home() {
     useEffect(()=> {
         axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
         .then((res) =>{
-            console.log(res.data)
+            // console.log(res.data)
             setUser(res.data)
            
         })
@@ -119,14 +119,14 @@ export default function Home() {
     async function handlePost(e) {
         e.preventDefault();
         let getHashtags = form.description.match(/#[a-zA-Z0-9]+/g);
-        console.log(getHashtags)
+        console.log('getHashtags:', getHashtags)
         
         setIsLoading(true);
         const body = {...form}
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, config);
             console.log("funcionou");
-            if( getHashtags.length > 0){
+            if( getHashtags?.length > 0){
                 getHashtags.forEach( async (h) => {    
                    await axios.post(`${process.env.REACT_APP_API_URL}/hashtag`, {h}, config)
                 })
@@ -169,7 +169,7 @@ export default function Home() {
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
+        onRequestClose={() => closeModal(false)}
         style={customStyles}
         contentLabel="Example Modal"
       >
@@ -180,7 +180,7 @@ export default function Home() {
         <br></br>
         <br></br>
         <div>
-          <NoDeleteStyled onClick={closeModal} >No, go back</NoDeleteStyled>
+          <NoDeleteStyled onClick={() => closeModal(false)} >No, go back</NoDeleteStyled>
           <DeleteStyled onClick={() => deletePost()}>Yes, delete it</DeleteStyled>
         </div>
       </Modal>

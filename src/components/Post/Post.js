@@ -15,9 +15,6 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   const [liked, setLiked] = useState(false)
   let newDescription
 
-  console.log('Post:', post.user_id);
-  console.log('User: ', user.id);
-
   let navigate = useNavigate();
 
   function filterPostsByHashtag(hashtag) {
@@ -108,13 +105,13 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   return (
     <PostDiv>
       <TrashStyled
-        display={user.id === post.user_id}
+        display={(user.id === post.user_id).toString()}
         onClick={deletePost}
       >
         <ion-icon name="trash"></ion-icon>
       </TrashStyled>
       <EditStyled
-        display={user.id === post.user_id}
+        display={(user.id === post.user_id).toString()}
         onClick={() => setEditing(!editing)}
       >
         <ion-icon name="pencil"></ion-icon>
