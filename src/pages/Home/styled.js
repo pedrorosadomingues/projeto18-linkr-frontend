@@ -5,7 +5,6 @@ export const Container = styled.div`
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
   overflow-x: hidden;
   background-color: #333333;
   h1{

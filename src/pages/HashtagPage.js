@@ -1,11 +1,11 @@
 import { Container, ImageDiv, PostDiv, PostButton, PostForm, PostInput, PostsContainer, Title, NoPosts, LoadingParagraph } from "./styled"
 import axios from "axios"
 import styled from "styled-components";
-import Header from "../../components/Header";
-import Post from "../../components/Post/Post"
+import Header from "../components/Header";
+import Post from "../components/Post/Post"
 import { useContext, useEffect, useState } from "react";
-import TrendingBar from "../../components/TrendingBar";
-import { AuthContext } from "../../contexts/AuthContext";
+import TrendingBar from "../components/TrendingBar";
+import { AuthContext } from "../contexts/AuthContext";
 
  export default function Home() {
     const [form, setForm] = useState({ url: "", description: "" });
@@ -51,19 +51,11 @@ import { AuthContext } from "../../contexts/AuthContext";
 
     async function handlePost(e) {
         e.preventDefault();
-        let getHashtags = form.description.match(/#[a-zA-Z0-9]+/g);
-        console.log(getHashtags)
-        
         setIsLoading(true);
         const body = {...form}
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, config);
             console.log("funcionou");
-            if( getHashtags.length > 0){
-                getHashtags.forEach( async (h) => {    
-                   await axios.post(`${process.env.REACT_APP_API_URL}/hashtag`, {h}, config)
-                })
-            }
             setIsLoading(false);
             setForm({ url: "", description: "" });
             setLoaded(false);
