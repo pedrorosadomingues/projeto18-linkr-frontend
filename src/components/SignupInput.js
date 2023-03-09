@@ -38,13 +38,10 @@ export function SignUpInput() {
 
       navigate('/');
     } catch (error) {
-      if (error.response.status === 401) {
-        alert('E-mail ou senha inválidos!');
-      } else {
-        if (error.response.status === 409) return alert('Email já cadastrado');
-        console.log(error)
-        alert(error.message.data);
-      }
+      console.log(error)
+      if (error.response?.status === 409) return alert('Email já cadastrado');
+      console.log(error)
+      alert(error.message.data);
       setDisabled(false);
     }
     setDisabled(false);

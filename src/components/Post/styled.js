@@ -8,6 +8,7 @@ export const PostDiv = styled.div`
   padding: 20px 23px;
   display:flex;
   font-family: 'Lato';
+  position: relative;
   @media (max-width: 600px){
     border-radius: 0px;
 }
@@ -61,6 +62,7 @@ export const UserName = styled.p`
 
 export const MetadataDiv = styled.div`
     min-height: 155px;
+    max-width: 503px;
     width: 100%;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
@@ -103,3 +105,22 @@ export const MetaInfo = styled.div`
   color: #CECECE;
   }
 `
+export const TrashStyled = styled.button`
+  position: absolute;
+  right: 15px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  display: ${({display}) => display ? 'block' : 'none'};
+`;
+
+export const EditStyled = styled.button`
+  position: absolute;
+  right: 55px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  display: ${({display}) => display ? 'block' : 'none'};
+`;
