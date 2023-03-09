@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Enter } from "./pages/Enter";
 import Home from "./pages/Home/Home";
 import AuthProvider from "./contexts/AuthContext";
-
+import 'react-tooltip/dist/react-tooltip.css'
 
 function App() {
 
