@@ -92,7 +92,56 @@ export default function Home() {
     setIsOpen(true);
   }
 
-  function afterOpenModal() {
+    useEffect(()=> {
+        axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
+        .then((res) =>{
+            console.log(res.data)
+            setUser(res.data)
+           
+        })
+        .catch((err) =>{
+            console.log(err)
+            alert("You are not logged!");
+        })
+
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
+        promise.then((res) =>{
+            console.log(res.data)
+            setPosts(res.data)
+            setLoaded(true)
+        })
+        .catch((err) =>{
+            console.log(err)
+            alert("An error occured while trying to fetch the posts, please refresh the page");
+        })
+    }, [loaded])
+
+    async function handlePost(e) {
+        e.preventDefault();
+        let getHashtags = form.description.match(/#[a-zA-Z0-9]+/g);
+        console.log(getHashtags)
+        
+        setIsLoading(true);
+        const body = {...form}
+        try {
+            await axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, config);
+            console.log("funcionou");
+            if( getHashtags.length > 0){
+                getHashtags.forEach( async (h) => {    
+                   await axios.post(`${process.env.REACT_APP_API_URL}/hashtag`, {h}, config)
+                })
+            }
+            setIsLoading(false);
+            setForm({ url: "", description: "" });
+            setLoaded(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+            alert("There was an error publishing your link")
+        }
+    }
+    
+      function afterOpenModal() {
     // references are now sync'd and can be accessed.
     subtitle.style.color = 'white';
   }
