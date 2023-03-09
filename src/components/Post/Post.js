@@ -4,10 +4,13 @@ import axios from "axios";
 import { LikeFilled, LikeOutline } from "../../pages/Home/styled";
 
 
+
+
 export default function Post({ post, deletePost, postId, loaded, setLoaded, config, user, token }) {
   const postRef = useRef(null);
   const [editing, setEditing] = useState(false);
   const [liked, setLiked] = useState(false)
+  let newDescription
 
   console.log('Post:', post.user_id);
   console.log('User: ', user.id);
@@ -17,8 +20,17 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
     const found = post.liked_by_users.find((obj) => obj.user_id === user.id)
     if (found) setLiked(true)
 
+    let getHashtags = post.post_description.match(/#[a-zA-Z0-9]+/g);
+
+    newDescription =  post.post_description
+  
+    getHashtags?.forEach( async (h) => {
+    
+     newDescription = newDescription.replace(h, `<a href="/hashtag/${h.replace('#', '')}">${h}</a>`)
+    })
+
     if (!editing) {
-      postRef.current.innerText = post.post_description;
+      postRef.current.innerHTML = newDescription;
       postRef.current.contentEditable = false;
     } else {
       postRef.current.contentEditable = true;
@@ -80,7 +92,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       await editPost(postRef.current.innerText);
     }
   };
-
+  
   return (
     <PostDiv>
       <TrashStyled

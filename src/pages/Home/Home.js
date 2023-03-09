@@ -228,7 +228,7 @@ export default function Home() {
             : loaded ? <NoPosts>There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
       </LeftColumn>
-
+    <TrendingBar></TrendingBar>
     </Container>
   )
 }
