@@ -141,11 +141,15 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
 
 
         <Likes data-tooltip-id="my-tooltip" data-tooltip-content={element}>
-            {post.like_count} {post.like_count === 1? "like":"likes"}</Likes>
+          {post.like_count} {post.like_count === 1 ? "like" : "likes"}</Likes>
         <Tooltip id="my-tooltip" />
       </ImageDiv>
       <InfoDiv>
-        <UserName>{post.user_name}</UserName>
+        <UserName onClick={() => {
+          navigate(`/user/${post.user_id}`)
+          window.location.reload();
+        }}>{post.user_name}</UserName>
+        {/* <UserName>{post.user_name}</UserName> */}
         <ReactTagify
           tagClicked={(tag) => {
             console.log(tag)
