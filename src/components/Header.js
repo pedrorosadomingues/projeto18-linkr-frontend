@@ -1,13 +1,50 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DebounceInput } from "react-debounce-input";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Header({user}) {
+export default function Header({ user }) {
   const [showLogout, setShowLogout] = useState(false);
-  
+  const [search, setSearch] = useState('');
+  const [users, setUsers] = useState(null);
+
 
   const navigate = useNavigate();
+
+  async function getUsers() {
+    const token = JSON.parse(localStorage.getItem('token'));
+
+    if (token && token !== '') {
+      try {
+        const config = {
+          headers: {
+            authentication: `Bearer ${token}`,
+          }
+        };
+        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-users`, {name: search}, config);
+        console.log('Data', data)
+        setUsers(data);
+
+      } catch (error) {
+        console.log(error);
+
+        throw new Error(error);
+      }
+    }
+  };
+
+
+  useEffect(() => {
+    async function fetchData() {
+      const usersData = await getUsers();
+
+      return usersData;
+    }
+    fetchData();
+
+    // console.log(search);
+  }, [search]);
 
   async function logout() {
     setShowLogout(!showLogout);
@@ -41,6 +78,25 @@ export default function Header({user}) {
 
       </WallStyled>
       <h1>linkr</h1>
+      <DebounceInput
+        placeholder="Search for people"
+        minLength={3}
+        debounceTimeout={300}
+        value={search}
+        onChange={({ target }) => setSearch(target.value)}
+      />
+      <UsersFromSearch
+        display={(search.length > 3).toString()}
+      >
+        {
+          users?.map(({imageUrl, name}, index) => (
+            <UserFromSearch key={index}>
+              <img alt="profile" src={imageUrl}/>
+              <p>{name}</p>
+            </UserFromSearch>
+          ))
+        }
+      </UsersFromSearch>
       <ProfileImageContainer>
         <button
           type="text"
@@ -62,7 +118,7 @@ export default function Header({user}) {
       >
         Logout
       </LogoutStyled>
-    </HeaderContainer>
+    </HeaderContainer >
   );
 }
 
@@ -132,3 +188,23 @@ const ProfileImageContainer = styled.div`
 
 `
   ;
+
+const UsersFromSearch = styled.ul`
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translate(-50%);
+  min-height: 200px;
+  min-width: 400px;
+  background-color: #e7e7e7;
+  border: none;
+  border-radius: 8px;
+  display: ${({ display }) => display === 'true' ? 'block' : 'none'};
+`;
+
+const UserFromSearch = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+`;
