@@ -15,6 +15,8 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   let newDescription
   let navigate = useNavigate();
 
+  console.log('POST', post)
+
   function tooltipElement(liked_by, like_count, liked, userId) {
 
     if (liked_by.length === 0) return `No one liked this post yet`
