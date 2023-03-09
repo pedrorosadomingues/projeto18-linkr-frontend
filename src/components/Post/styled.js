@@ -50,6 +50,10 @@ export const InfoDescription = styled.div`
     line-height: 20px;
     color: #B7B7B7;
     margin-bottom: 8px;
+    a {
+      font-weight: 900;
+      color: #B7B7B7;
+    }
 `
 
 export const UserName = styled.p`
