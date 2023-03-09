@@ -6,6 +6,7 @@ import AuthProvider from "./contexts/AuthContext";
 
 
 function App() {
+
   return (
       <Linkr>
         <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
             <Route path="/timeline" element={<Home />} />
             <Route path="/sign-up" element={<Enter mode="signup" />} />
             <Route path="/" element={<Enter mode="signin" />} />
+            <Route path="/hashtag/:hashtag" element={<Home />} />
           </Routes>
           </AuthProvider>
         </BrowserRouter>

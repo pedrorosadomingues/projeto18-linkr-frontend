@@ -221,7 +221,7 @@ export default function Home() {
         </PostsContainer>
         <PostsContainer>
           {posts.length ? posts.map((post) => <Post key={post.post_id} user={user} token={token}
-          loaded={loaded} setLoaded={setLoaded} config={config} post={post} postId={post.post_id} deletePost={() => {
+          loaded={loaded} setLoaded={setLoaded} config={config} post={post} postId={post.post_id} posts={posts} setPosts={setPosts}deletePost={() => {
             setPostId(post.post_id);
             openModal(post.post_id);
           }}></Post>)

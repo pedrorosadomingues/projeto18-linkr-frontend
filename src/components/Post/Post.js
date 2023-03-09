@@ -2,11 +2,14 @@ import { EditStyled, ImageDiv, InfoDescription, InfoDiv, Likes, MetadataDiv, Met
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { LikeFilled, LikeOutline } from "../../pages/Home/styled";
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 
 
 
 
-export default function Post({ post, deletePost, postId, loaded, setLoaded, config, user, token }) {
+
+export default function Post({ post, deletePost, postId, loaded, setLoaded, config, user, token, posts, setPosts }) {
   const postRef = useRef(null);
   const [editing, setEditing] = useState(false);
   const [liked, setLiked] = useState(false)
@@ -14,6 +17,15 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
 
   console.log('Post:', post.user_id);
   console.log('User: ', user.id);
+
+  let navigate = useNavigate();
+
+  function filterPostsByHashtag(hashtag) {
+    const filteredPosts = posts.filter((p) => p.post_description.includes(hashtag));
+    setPosts(filteredPosts);
+    navigate('/hashtag/' + hashtag.replace('#', '') );
+    console.log(filteredPosts);
+  }
 
   useEffect(() => {
     // console.log('Editing??', editing)
@@ -26,7 +38,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   
     getHashtags?.forEach( async (h) => {
     
-     newDescription = newDescription.replace(h, `<a href="/hashtag/${h.replace('#', '')}">${h}</a>`)
+     newDescription = newDescription.replace(h, `<span style = "color: #B7B7B7" >${h}</span>`)
     })
 
     if (!editing) {
@@ -116,7 +128,16 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       </ImageDiv>
       <InfoDiv>
         <UserName>{post.user_name}</UserName>
+        <ReactTagify
+        tagClicked={(tag) => {
+          console.log(tag)
+          filterPostsByHashtag(tag)
+          
+        }}
+        colors="#B7B7B7"
+        >
         <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}>{post.post_description}</InfoDescription>
+        </ReactTagify>
         <MetadataDiv onClick={() => redirect(post.metadata_info.url)}>
           <MetaInfo>
             <h2>{post.metadata_info.title}</h2>
