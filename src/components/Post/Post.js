@@ -2,20 +2,17 @@ import { EditStyled, ImageDiv, InfoDescription, InfoDiv, Likes, MetadataDiv, Met
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { LikeFilled, LikeOutline } from "../../pages/Home/styled";
-import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from 'react-tooltip'
 
 
-export default function Post({ post, deletePost, postId, loaded, setLoaded, config, user, token, posts, setPosts }) {
+export default function Post({ post, deletePost, postId, loaded, setLoaded, config, user, token, posts, setPosts, setHashtagName }) {
   const postRef = useRef(null);
   const [editing, setEditing] = useState(false);
   const [liked, setLiked] = useState(false)
   const [element, setElement] = useState("")
-  let newDescription
+  const [ newDescription, setNewDescription ] = useState(post.post_description.split(" "))
   let navigate = useNavigate();
-
-  console.log('POST', post)
 
   function tooltipElement(liked_by, like_count, liked, userId) {
 
@@ -36,10 +33,8 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   }
 
   function filterPostsByHashtag(hashtag) {
-    const filteredPosts = posts.filter((p) => p.post_description.includes(hashtag));
-    setPosts(filteredPosts);
+    setHashtagName(hashtag);
     navigate('/hashtag/' + hashtag.replace('#', ''));
-    console.log(filteredPosts);
   }
 
   useEffect(() => {
@@ -48,17 +43,10 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
     if (found) setLiked(true)
     const tooltip = tooltipElement(post.liked_by_users, post.like_count, liked, user.id)
     setElement(tooltip)
-    let getHashtags = post.post_description.match(/#[a-zA-Z0-9]+/g);
-
-    newDescription = post.post_description
-
-    getHashtags?.forEach(async (h) => {
-
-      newDescription = newDescription.replace(h, `<span style = "color: #B7B7B7" >${h}</span>`)
-    })
+   
 
     if (!editing) {
-      postRef.current.innerHTML = newDescription;
+      //postRef.current.innerText = post.post_description;
       postRef.current.contentEditable = false;
     } else {
       postRef.current.contentEditable = true;
@@ -119,7 +107,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
     if (event.key === 'Enter') {
       await editPost(postRef.current.innerText);
     }
-  };
+  }; 
 
   return (
     <PostDiv>
@@ -150,16 +138,21 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
           window.location.reload();
         }}>{post.user_name}</UserName>
         {/* <UserName>{post.user_name}</UserName> */}
-        <ReactTagify
-          tagClicked={(tag) => {
-            console.log(tag)
-            filterPostsByHashtag(tag)
-
-          }}
-          colors="#B7B7B7"
-        >
-          <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}>{post.post_description}</InfoDescription>
-        </ReactTagify>
+          <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}>{newDescription.map((word, index) => {
+          if (word[0] === '#') {
+            return (
+              <strong 
+              onClick={() => filterPostsByHashtag(word)}
+               >
+                {word}{' '}
+              </strong>
+            );
+          } else {
+            return word + ' ';
+          }
+          })}
+          </InfoDescription>
+        
         <MetadataDiv onClick={() => redirect(post.metadata_info.url)}>
           <MetaInfo>
             <h2>{post.metadata_info.title}</h2>

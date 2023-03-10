@@ -50,9 +50,10 @@ export const InfoDescription = styled.div`
     line-height: 20px;
     color: #b7b7b7;
     margin-bottom: 8px;
-    span {
+    strong{
+      color: #b7b7b7;
       font-weight: 900;
-      color: #B7B7B7;
+      cursor: pointer;
     }
 `
 

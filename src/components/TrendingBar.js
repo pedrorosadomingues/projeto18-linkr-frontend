@@ -1,9 +1,19 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function TrendingBar() {
+export default function TrendingBar({posts, setPosts, setHashtagName}) {
     const [trendingHashtags, setTrendingHashtags] = useState([]);
+    const navigate = useNavigate();
+
+    function filterPostsByHashtag(hashtag) {
+        setHashtagName(hashtag);
+        const filteredPosts = posts.filter((p) => p.post_description.includes(hashtag));
+        setPosts(filteredPosts);
+        console.log("filteredPost:",filteredPosts);
+        navigate('/hashtag/' + hashtag.replace('#', ''));
+      }
 
     const config = { 
         headers: {
@@ -27,7 +37,9 @@ export default function TrendingBar() {
             <ul>
                 {trendingHashtags.map((hashtag, index) => (
                     <li key={index}>
-                        <span>{hashtag.name}</span>
+                        <span 
+                        onClick={() => filterPostsByHashtag(hashtag.name)}
+                        >{hashtag.name}</span>
                     </li>
                 ))}
             </ul>
@@ -60,6 +72,7 @@ const TrendingContainer = styled.div`
                 font-size: 19px;
                 color: #FFF;
                 margin-left: 10px;
+                cursor: pointer;
             }
             
         }
