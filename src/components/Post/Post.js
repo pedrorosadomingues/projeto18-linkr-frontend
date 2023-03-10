@@ -48,7 +48,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
    
 
     if (!editing) {
-      //postRef.current.innerText = post.post_description;
+      postRef.current.innerText = post.post_description;
       postRef.current.contentEditable = false;
     } else {
       postRef.current.contentEditable = true;
