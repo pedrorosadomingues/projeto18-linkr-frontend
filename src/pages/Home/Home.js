@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 
 Modal.setAppElement(document.getElementById('root'));
 
-export default function Home({posts, setPosts, setHashtagName}) {
+export default function Home({ posts, setPosts, setHashtagName }) {
   const [form, setForm] = useState({ url: "", description: "" });
   const [isLoading, setIsLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -273,11 +273,8 @@ export default function Home({posts, setPosts, setHashtagName}) {
                 }}
 
                 setHashtagName={setHashtagName}
-                data-test="post"
-                >
-
-
-              </Post> :
+              />
+              :
               location.pathname?.includes('user') ? null :
                 <Post
                   key={post.post_id}
@@ -297,7 +294,7 @@ export default function Home({posts, setPosts, setHashtagName}) {
 
                   setHashtagName={setHashtagName}
                   data-test="post"
-                  >
+                >
 
 
                 </Post>

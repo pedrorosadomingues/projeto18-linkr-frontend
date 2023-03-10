@@ -83,6 +83,7 @@ export function SignUpInput() {
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
         disabled={!disabled ? false : true}
+        required
       />
       <ButtonStyled
         data-test="sign-up-btn"
