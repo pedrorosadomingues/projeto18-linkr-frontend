@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function TrendingBar({posts, setPosts, setHashtagName}) {
+export default function TrendingBar({posts, setPosts, setHashtagName, loaded}) {
     const [trendingHashtags, setTrendingHashtags] = useState([]);
     const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export default function TrendingBar({posts, setPosts, setHashtagName}) {
         request.catch(error => {
             console.log(error);
         });
-    }, []);
+    }, [loaded]);
 
     return (
         <TrendingContainer data-test="trending">

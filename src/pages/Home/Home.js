@@ -298,7 +298,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
             : loaded ? <NoPosts data-test="message">There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
       </LeftColumn>
-      <TrendingBar setHashtagName={setHashtagName} setPosts={setPosts} posts={posts}></TrendingBar>
+      <TrendingBar loaded={loaded} setHashtagName={setHashtagName} setPosts={setPosts} posts={posts}></TrendingBar>
     </Container>
   )
 }
