@@ -293,11 +293,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
                   }}
 
                   setHashtagName={setHashtagName}
-                  data-test="post"
-                >
-
-
-                </Post>
+                />
           ))
             : loaded ? <NoPosts data-test="message">There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
