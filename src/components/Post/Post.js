@@ -122,7 +122,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   };
 
   return (
-    <PostDiv>
+    <PostDiv data-test="post">
       <TrashStyled
         display={(user.id === post.user_id).toString()}
         onClick={deletePost}
