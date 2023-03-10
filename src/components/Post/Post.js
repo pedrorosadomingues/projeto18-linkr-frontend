@@ -14,6 +14,8 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   const [ newDescription, setNewDescription ] = useState(post.post_description.split(" "))
   let navigate = useNavigate();
 
+  console.log('LIKED:', liked);
+
   function tooltipElement(liked_by, like_count, liked, userId) {
 
     if (liked_by.length === 0) return `No one liked this post yet`
@@ -39,8 +41,8 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
 
   useEffect(() => {
     // console.log('Editing??', editing)
-    const found = post.liked_by_users.find((obj) => obj.user_id === user.id)
-    if (found) setLiked(true)
+    // const found = post.liked_by_users.find((obj) => obj.user_id === user.id)
+    // if (found) setLiked(true)
     const tooltip = tooltipElement(post.liked_by_users, post.like_count, liked, user.id)
     setElement(tooltip)
    
@@ -126,7 +128,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       </EditStyled>
       <ImageDiv>
         <img src={post.user_image_url} alt="Profile" />
-        {liked ? <LikeFilled onClick={() => unlikePost(post.post_id)} data-test="like-btn"/> : <LikeOutline data-test="like-btn" onClick={() => likePost(post.post_id)} />}
+        {post.liked_by_users.find((obj) => obj.user_id === user.id) ? <LikeFilled onClick={() => unlikePost(post.post_id)} data-test="like-btn"/> : <LikeOutline data-test="like-btn" onClick={() => likePost(post.post_id)} />}
 
 
         <Likes data-tooltip-id="my-tooltip" data-tooltip-content={element} data-test="counter">
