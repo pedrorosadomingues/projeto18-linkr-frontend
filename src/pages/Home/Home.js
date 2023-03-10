@@ -212,14 +212,14 @@ export default function Home({posts, setPosts, setHashtagName}) {
         <br></br>
         <br></br>
         <div>
-          <NoDeleteStyled onClick={() => closeModal(false)} >No, go back</NoDeleteStyled>
-          <DeleteStyled onClick={() => deletePost()}>Yes, delete it</DeleteStyled>
+          <NoDeleteStyled onClick={() => closeModal(false)} data-test="cancel">No, go back</NoDeleteStyled>
+          <DeleteStyled onClick={() => deletePost()} data-test="confirm">Yes, delete it</DeleteStyled>
         </div>
       </Modal>
       <LeftColumn>
         <PostsContainer>
           <Title>{location.pathname?.includes('user') ? userFromQuery?.name + "'s posts" : 'Timeline'}</Title>
-          {!location.pathname?.includes('user') && <PostDiv>
+          {!location.pathname?.includes('user') && <PostDiv data-test="publish-box">
             <ImageDiv>
               <img src={user.imageUrl} alt="profile picture">
               </img>
@@ -235,6 +235,7 @@ export default function Home({posts, setPosts, setHashtagName}) {
                 disabled={isLoading}
                 value={form.url}
                 onChange={handleForm}
+                data-test="link"
               />
               <PostInput
                 name="description"
@@ -244,8 +245,9 @@ export default function Home({posts, setPosts, setHashtagName}) {
                 disabled={isLoading}
                 value={form.description}
                 onChange={handleForm}
+                data-test="description"
               />
-              <PostButton type="submit" disabled={isLoading}>
+              <PostButton type="submit" disabled={isLoading} data-test="publish-btn">
                 {isLoading ? "Publishing..." : "Publish"}
               </PostButton>
             </PostForm>
@@ -269,8 +271,11 @@ export default function Home({posts, setPosts, setHashtagName}) {
                   setPostId(post.post_id);
                   openModal(post.post_id);
                 }}
+
                 setHashtagName={setHashtagName}
+                data-test="post"
                 >
+
 
               </Post> :
               location.pathname?.includes('user') ? null :
@@ -289,12 +294,15 @@ export default function Home({posts, setPosts, setHashtagName}) {
                     setPostId(post.post_id);
                     openModal(post.post_id);
                   }}
+
                   setHashtagName={setHashtagName}
+                  data-test="post"
                   >
+
 
                 </Post>
           ))
-            : loaded ? <NoPosts>There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
+            : loaded ? <NoPosts data-test="message">There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
       </LeftColumn>
       <TrendingBar setHashtagName={setHashtagName} setPosts={setPosts} posts={posts}></TrendingBar>

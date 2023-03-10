@@ -94,7 +94,7 @@ export default function HashtagPage({ posts, setPosts, hashtagName, setHashtagNa
 
     return (
         <Container>
-            <Header user={user}></Header>
+            <Header data-test="username" user={user}></Header>
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -162,7 +162,7 @@ export default function HashtagPage({ posts, setPosts, hashtagName, setHashtagNa
                         : loaded ? <NoPosts>There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
                 </PostsContainer>
             </LeftColumn>
-            <TrendingBar
+            <TrendingBar data-test="trending"
                 setHashtagName={setHashtagName} setPosts={setPosts} posts={posts}
             ></TrendingBar>
         </Container>

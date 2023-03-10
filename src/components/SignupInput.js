@@ -50,6 +50,7 @@ export function SignUpInput() {
   return (
     <FormStyled onSubmit={(e) => signup(e)}>
       <input
+        data-test="email"
         placeholder="email"
         type="email"
         value={email}
@@ -58,6 +59,7 @@ export function SignUpInput() {
         disabled={!disabled ? false : true}
       />
       <input
+        data-test="password"
         placeholder="password"
         type="password"
         value={password}
@@ -66,6 +68,7 @@ export function SignUpInput() {
         disabled={!disabled ? false : true}
       />
       <input
+        data-test="username"
         placeholder="username"
         type="text"
         value={name}
@@ -74,6 +77,7 @@ export function SignUpInput() {
         disabled={!disabled ? false : true}
       />
       <input
+        data-test="picture-url"
         placeholder="picture url"
         type="text"
         value={imageUrl}
@@ -81,12 +85,14 @@ export function SignUpInput() {
         disabled={!disabled ? false : true}
       />
       <ButtonStyled
+        data-test="sign-up-btn"
         onClick={handleSignup}
         disabled={!disabled ? false : true}
       >
         <p>SignUp</p>
       </ButtonStyled>
       <button
+        data-test="login-link"
         type="button"
         onClick={() => navigate('/')}
       >

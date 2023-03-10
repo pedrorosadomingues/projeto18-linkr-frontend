@@ -50,6 +50,7 @@ export function SignInInput() {
   return (
     <FormStyled onSubmit={(e) => signin(e)}>
       <input
+        data-test="email"
         placeholder="email"
         type="email"
         value={email}
@@ -58,6 +59,7 @@ export function SignInInput() {
         disabled={!disabled ? false : true}
       />
       <input
+        data-test="password"
         placeholder="password"
         type="password"
         value={password}
@@ -66,12 +68,14 @@ export function SignInInput() {
         disabled={!disabled ? false : true}
       />
       <ButtonStyled
+        data-test="login-btn"
         onClick={handleSignup}
         disabled={!disabled ? false : true}
       >
         <p>SignIn</p>
       </ButtonStyled>
       <button
+        data-test="sign-up-link"
         type="button"
         onClick={() => navigate('/sign-up')}
       >

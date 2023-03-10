@@ -32,14 +32,16 @@ export default function TrendingBar({posts, setPosts, setHashtagName}) {
     }, []);
 
     return (
-        <TrendingContainer>
-            <h1>trending</h1>
+        <TrendingContainer data-test="trending">
+            <h1 data-test="hashtag-title">trending</h1>
             <ul>
                 {trendingHashtags.map((hashtag, index) => (
                     <li key={index}>
-                        <span 
+
+                        <span data-test="hashtag"
                         onClick={() => filterPostsByHashtag(hashtag.name)}
                         >{hashtag.name}</span>
+
                     </li>
                 ))}
             </ul>

@@ -70,7 +70,7 @@ export default function Header({ user }) {
 
 
   return (
-    <HeaderContainer>
+    <HeaderContainer data-test="menu">
       <WallStyled
         showLogout={showLogout}
         onClick={() => setShowLogout(false)}
@@ -84,13 +84,14 @@ export default function Header({ user }) {
         debounceTimeout={300}
         value={search}
         onChange={({ target }) => setSearch(target.value)}
+        data-test="search"
       />
       <UsersFromSearch
         display={(search.length > 3).toString()}
       >
         {
           users?.map(({imageUrl, name, id}, index) => (
-            <UserFromSearch key={index}>
+            <UserFromSearch key={index} data-test="user-search">
               <img alt="profile" src={imageUrl}/>
               <button onClick={() => {
                 navigate(`/user/${id}`)
@@ -111,13 +112,14 @@ export default function Header({ user }) {
           type="button"
           onClick={() => setShowLogout(!showLogout)}
         >
-          <img src={user.imageUrl} />
+          <img src={user.imageUrl} data-test="avatar"/>
         </button>
       </ProfileImageContainer >
       <LogoutStyled
         type="button"
         onClick={logout}
         showLogout={showLogout}
+        data-test="logout"
       >
         Logout
       </LogoutStyled>
