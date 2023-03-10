@@ -140,7 +140,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
         }}>{post.user_name}</UserName>
         {/* <UserName>{post.user_name}</UserName> */}
 
-          <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}>{newDescription.map((word, index) => {
+          <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}><p data-test="description">{newDescription.map((word, index) => {
           if (word[0] === '#') {
             return (
               <strong 
@@ -153,13 +153,14 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
             return word + ' ';
           }
           })}
+          </p>
           </InfoDescription>
 
-        <MetadataDiv onClick={() => redirect(post.metadata_info.url)}>
+        <MetadataDiv data-test="link" href={post.metadata_info.url} target="blank">
           <MetaInfo>
             <h2>{post.metadata_info.title}</h2>
             <h3>{post.metadata_info.description}</h3>
-            <h4 data-test="link">{post.metadata_info.url}</h4>
+            <h4 >{post.metadata_info.url}</h4>
           </MetaInfo>
           <MetaImg src={post.metadata_info.image} alt="metadata_image"></MetaImg>
         </MetadataDiv>
