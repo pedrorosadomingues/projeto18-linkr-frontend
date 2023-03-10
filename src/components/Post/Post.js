@@ -88,7 +88,6 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   }
 
   async function editPost(text) {
-    console.log('EDIT');
     setLoaded(true);
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/timeline/${postId}`, { text }, config);
