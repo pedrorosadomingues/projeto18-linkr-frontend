@@ -14,7 +14,6 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   const [ newDescription, setNewDescription ] = useState(post.post_description.split(" "))
   let navigate = useNavigate();
 
-  console.log('LIKED:', liked);
 
   function tooltipElement(liked_by, like_count, liked, userId) {
 
@@ -143,12 +142,13 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
         {/* <UserName>{post.user_name}</UserName> */}
 
           <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}><p data-test="description">{newDescription.map((word, index) => {
-          if (word[0] === '#') {
+          if (word[0] == '#') {
+            
             return (
               <strong 
               onClick={() => filterPostsByHashtag(word)}
                >
-                {word}{' '}
+                {word + ' '}
               </strong>
             );
           } else {

@@ -58,7 +58,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
           }
         };
         const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-by-id`, { id }, config);
-        console.log('Data from id', data)
+
         setUserFromQuery(data[0]);
 
       } catch (error) {
@@ -94,7 +94,6 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
     const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
     promise.then((res) => {
-      // console.log(res.data)
       setPosts(res.data)
       setLoaded(true)
     })
@@ -127,7 +126,6 @@ export default function Home({ posts, setPosts, setHashtagName }) {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
       .then((res) => {
-        // console.log(res.data)
         setUser(res.data)
 
       })
@@ -138,7 +136,6 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
     const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
     promise.then((res) => {
-      console.log(res.data)
       setPosts(res.data)
       setLoaded(true)
     })

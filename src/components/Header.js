@@ -23,7 +23,6 @@ export default function Header({ user }) {
           }
         };
         const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-users`, {name: search}, config);
-        console.log('Data', data)
         setUsers(data);
 
       } catch (error) {
