@@ -212,4 +212,20 @@ const UserFromSearch = styled.li`
   align-items: center;
   justify-content: space-around;
   padding: 10px;
+
+  & button {
+    background-color: transparent;
+    border: none;
+  }
+  & button:hover {
+    background-color: green;
+    color: white;
+    padding: 8px;
+  }
+
+  & img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+  }
 `;
