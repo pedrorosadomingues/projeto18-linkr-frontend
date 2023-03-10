@@ -126,7 +126,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       </EditStyled>
       <ImageDiv>
         <img src={post.user_image_url} alt="Profile" />
-        {liked ? <LikeFilled onClick={() => unlikePost(post.post_id)} data-test="like-btn"/> : <LikeOutline onClick={() => likePost(post.post_id)} />}
+        {liked ? <LikeFilled onClick={() => unlikePost(post.post_id)} data-test="like-btn"/> : <LikeOutline data-test="like-btn" onClick={() => likePost(post.post_id)} />}
 
 
         <Likes data-tooltip-id="my-tooltip" data-tooltip-content={element} data-test="counter">
