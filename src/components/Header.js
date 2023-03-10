@@ -91,19 +91,14 @@ export default function Header({ user }) {
       >
         {
           users?.map(({imageUrl, name, id}, index) => (
-            <UserFromSearch key={index} data-test="user-search">
-              <img alt="profile" src={imageUrl} onClick={() => {
-                navigate(`/user/${id}`)
-                setSearch('')
-                window.location.reload();
-             
-              }}/>
-              <button onClick={() => {
-                navigate(`/user/${id}`)
-                setSearch('')
-                window.location.reload();
-             
-              }}>{name}</button>
+            <UserFromSearch key={index} data-test="user-search" onClick={() => {
+              navigate(`/user/${id}`)
+              setSearch('')
+              window.location.reload();
+           
+            }}>
+              <img alt="profile" src={imageUrl} />
+              <button >{name}</button>
             </UserFromSearch>
           ))
         }
