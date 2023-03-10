@@ -68,11 +68,11 @@ import { AuthContext } from "../contexts/AuthContext";
     
     return (
         <Container>
-            <Header user={user}></Header>
+            <Header user={user} data-test="username"></Header>
             <LeftColumn>
             <PostsContainer>
             <Title>Timeline</Title>
-                <PostDiv>
+                <PostDiv data-test="post">
                     <ImageDiv>
                         <img src={user.imageUrl} alt="profile picture">
                         </img>
@@ -88,6 +88,7 @@ import { AuthContext } from "../contexts/AuthContext";
                                  disabled={isLoading}
                                  value={form.url}
                                  onChange={handleForm}
+                                 data-test="link" 
                             />
                             <PostInput 
                                  name="description"
@@ -97,6 +98,7 @@ import { AuthContext } from "../contexts/AuthContext";
                                  disabled={isLoading}
                                  value={form.description}
                                  onChange={handleForm}
+                                 data-test="description" 
                             />
                             <PostButton type="submit" disabled={isLoading}>
                                 {isLoading ? "Publishing..." : "Publish"}
@@ -106,10 +108,10 @@ import { AuthContext } from "../contexts/AuthContext";
             </PostsContainer>
             <PostsContainer>
                 {posts.length? posts.map((post) => <Post key={post.post_id} post={post}></Post>) 
-                : loaded ? <NoPosts>There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
+                : loaded ? <NoPosts data-test="message">There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
             </PostsContainer>
             </LeftColumn>
-            <TrendingBar></TrendingBar>
+            <TrendingBar data-test="trending"></TrendingBar>
         
         </Container>
     )

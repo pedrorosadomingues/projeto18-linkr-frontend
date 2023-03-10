@@ -22,12 +22,12 @@ export default function TrendingBar() {
     }, []);
 
     return (
-        <TrendingContainer>
-            <h1>trending</h1>
+        <TrendingContainer data-test="trending">
+            <h1 data-test="hashtag-title">trending</h1>
             <ul>
                 {trendingHashtags.map((hashtag, index) => (
                     <li key={index}>
-                        <span>{hashtag.name}</span>
+                        <span data-test="hashtag">{hashtag.name}</span>
                     </li>
                 ))}
             </ul>

@@ -126,26 +126,28 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       <TrashStyled
         display={(user.id === post.user_id).toString()}
         onClick={deletePost}
+        data-test="delete-btn"
       >
         <ion-icon name="trash"></ion-icon>
       </TrashStyled>
       <EditStyled
         display={(user.id === post.user_id).toString()}
         onClick={() => setEditing(!editing)}
+        data-test="edit-btn"
       >
         <ion-icon name="pencil"></ion-icon>
       </EditStyled>
       <ImageDiv>
         <img src={post.user_image_url} alt="Profile" />
-        {liked ? <LikeFilled onClick={() => unlikePost(post.post_id)} /> : <LikeOutline onClick={() => likePost(post.post_id)} />}
+        {liked ? <LikeFilled onClick={() => unlikePost(post.post_id)} data-test="like-btn"/> : <LikeOutline onClick={() => likePost(post.post_id)} />}
 
 
-        <Likes data-tooltip-id="my-tooltip" data-tooltip-content={element}>
+        <Likes data-tooltip-id="my-tooltip" data-tooltip-content={element} data-test="counter">
           {post.like_count} {post.like_count === 1 ? "like" : "likes"}</Likes>
-        <Tooltip id="my-tooltip" />
+        <Tooltip id="my-tooltip" data-test="tooltip"/>
       </ImageDiv>
       <InfoDiv>
-        <UserName onClick={() => {
+        <UserName data-test="username" onClick={() => {
           navigate(`/user/${post.user_id}`)
           window.location.reload();
         }}>{post.user_name}</UserName>
@@ -158,13 +160,13 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
           }}
           colors="#B7B7B7"
         >
-          <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}>{post.post_description}</InfoDescription>
+          <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown} data-test={editing ? "edit-input" : "description"}>{post.post_description}</InfoDescription>
         </ReactTagify>
         <MetadataDiv onClick={() => redirect(post.metadata_info.url)}>
           <MetaInfo>
             <h2>{post.metadata_info.title}</h2>
             <h3>{post.metadata_info.description}</h3>
-            <h4>{post.metadata_info.url}</h4>
+            <h4 data-test="link">{post.metadata_info.url}</h4>
           </MetaInfo>
           <MetaImg src={post.metadata_info.image} alt="metadata_image"></MetaImg>
         </MetadataDiv>
