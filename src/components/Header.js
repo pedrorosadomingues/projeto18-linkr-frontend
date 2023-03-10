@@ -77,8 +77,8 @@ export default function Header({ user }) {
       >
 
       </WallStyled>
-      <h1>linkr</h1>
-      <DebounceInput
+      <h1 onClick={()=> navigate('/timeline')}>linkr</h1>
+      <Input
         placeholder="Search for people"
         minLength={3}
         debounceTimeout={300}
@@ -92,10 +92,17 @@ export default function Header({ user }) {
         {
           users?.map(({imageUrl, name, id}, index) => (
             <UserFromSearch key={index} data-test="user-search">
-              <img alt="profile" src={imageUrl}/>
+              <img alt="profile" src={imageUrl} onClick={() => {
+                navigate(`/user/${id}`)
+                setSearch('')
+                window.location.reload();
+             
+              }}/>
               <button onClick={() => {
                 navigate(`/user/${id}`)
+                setSearch('')
                 window.location.reload();
+             
               }}>{name}</button>
             </UserFromSearch>
           ))
@@ -136,6 +143,23 @@ const WallStyled = styled.button`
   border: none;
   display: ${({ showLogout }) => showLogout ? 'block' : 'none'};
 `;
+const Input = styled(DebounceInput)`
+    max-width: 563px;
+    width: 100%;
+    height: 45px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border:none;
+    font-family: 'Lato';
+    font-size: 19px;
+    line-height: 23px;
+    font-weight: 400;
+    padding-left: 15px;
+    &::placeholder{
+      color: #C6C6C6;
+    }
+`
+
 
 const LogoutStyled = styled.button`
     position: absolute;
@@ -210,22 +234,22 @@ const UsersFromSearch = styled.ul`
 const UserFromSearch = styled.li`
   display: flex;
   align-items: center;
-  justify-content: space-around;
   padding: 10px;
 
   & button {
     background-color: transparent;
     border: none;
+    font-size: 19px;
+    color: #515151;
   }
   & button:hover {
-    background-color: green;
-    color: white;
-    padding: 8px;
+    cursor: pointer;
   }
 
   & img {
-    height: 60px;
-    width: 60px;
+    height: 39px;
+    width: 39px;
     border-radius: 50%;
+    margin-right: 12px;
   }
 `;
