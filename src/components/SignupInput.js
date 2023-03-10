@@ -90,7 +90,7 @@ export function SignUpInput() {
         onClick={handleSignup}
         disabled={!disabled ? false : true}
       >
-        <p>SignUp</p>
+        <p>Sign Up</p>
       </ButtonStyled>
       <button
         data-test="login-link"
@@ -107,9 +107,13 @@ export const ButtonStyled = styled.button`
   background-color: #1877F2;
   width: 100%;
   color: white;
+  font-family: 'Oswald';
   font-weight: 700;
   font-size: 20px;
+  line-height: 40px;
   border-radius: 8px;
+  height: 65px;
+  border: none;
 
   &:disabled {
     opacity: 0.3;
@@ -122,12 +126,18 @@ export const FormStyled = styled.form`
   align-items: center;
   justify-content: center;
   width: 80%;
-
+  
   & > button:last-of-type {
     background-color: transparent;
     border: none;
     text-decoration: underline;
     color: white;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    margin-top: 22px;
   }
 
   @media (max-width: 800px) {
@@ -141,8 +151,9 @@ export const FormStyled = styled.form`
     border-radius: 8px;
     background-color: #fff;
     padding: 0 18px;
-    color: #49ad0d;
-    font-size: 22px;
+    color: #000000;
+    font-size: 27px;
+    line-height: 40px;
     margin-bottom: 14px;
 
     @media (max-width: 1315px) {
@@ -154,7 +165,10 @@ export const FormStyled = styled.form`
     }
   }
   input::placeholder {
-    font-size: 22px;
     color: #9f9f9f;
+    font-family: 'Oswald';
+    font-weight: 700;
+    font-size: 27px;
+    line-height: 40px;
   }
 `;

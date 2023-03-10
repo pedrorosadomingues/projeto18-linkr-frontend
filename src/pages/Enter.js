@@ -30,6 +30,8 @@ const LeftStyled = styled.div`
   color: white;
   position: relative;
   background-color: #151515;
+  display: flex;
+  flex-direction: column;
   width: calc((2 / 3) * 100%);
 `;
 
@@ -43,9 +45,9 @@ const RightStyled = styled.div`
 const TextStyled = styled.div`
   position: absolute;
   left: 20%;
-  top: 15%;
-  width: 400px;
-  font-size: 43px;
+  top: 35%;
+  max-width: 450px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,5 +56,13 @@ const TextStyled = styled.div`
   & h2 {
     font-family: 'Passion One', cursive;
     font-size: 106px;
+    line-height: 0.75em;
+  }
+  & p{
+    font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 43px;
+  line-height: 64px;
   }
 `;

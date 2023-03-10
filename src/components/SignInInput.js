@@ -72,7 +72,7 @@ export function SignInInput() {
         onClick={handleSignup}
         disabled={!disabled ? false : true}
       >
-        <p>SignIn</p>
+        <p>Log In</p>
       </ButtonStyled>
       <button
         data-test="sign-up-link"
