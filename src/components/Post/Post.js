@@ -156,7 +156,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
           </p>
           </InfoDescription>
 
-        <MetadataDiv data-test="link" onClick={() => redirect(post.metadata_info.url)}>
+        <MetadataDiv data-test="link" href={post.metadata_info.url} target="blank">
           <MetaInfo>
             <h2>{post.metadata_info.title}</h2>
             <h3>{post.metadata_info.description}</h3>

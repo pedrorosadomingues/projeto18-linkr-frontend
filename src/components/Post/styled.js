@@ -65,13 +65,14 @@ export const UserName = styled.p`
     margin-bottom: 7px;
 `
 
-export const MetadataDiv = styled.div`
+export const MetadataDiv = styled.a`
     min-height: 155px;
     max-width: 503px;
     width: 100%;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
     display:flex;
+    text-decoration: none;
 `
 
 export const MetaImg = styled.img`
