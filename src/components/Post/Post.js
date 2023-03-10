@@ -141,7 +141,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
         }}>{post.user_name}</UserName>
         {/* <UserName>{post.user_name}</UserName> */}
 
-          <InfoDescription disabled={loaded} ref={postRef} onKeyDown={handleKeyDown}><p data-test="description">{newDescription.map((word, index) => {
+          <InfoDescription ><p disabled={loaded} ref={postRef} onKeyDown={handleKeyDown} data-test="description">{newDescription.map((word, index) => {
           if (word[0] == '#') {
             
             return (
