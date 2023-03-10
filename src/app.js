@@ -1,26 +1,32 @@
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState } from "react";
 import { Enter } from "./pages/Enter";
 import Home from "./pages/Home/Home";
+import HashtagPage from "./pages/HashtagPage";
 import AuthProvider from "./contexts/AuthContext";
 import 'react-tooltip/dist/react-tooltip.css'
 
+
 function App() {
+  const [posts, setPosts] = useState([]);
+  const [hashtagName, setHashtagName] = useState("");
+  
 
   return (
-      <Linkr>
-        <BrowserRouter>
+    <Linkr>
+      <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/timeline" element={<Home />} />
+            <Route path="/timeline" element={<Home posts={posts} setPosts={setPosts} setHashtagName={setHashtagName}/>} />
             <Route path="/sign-up" element={<Enter mode="signup" />} />
             <Route path="/" element={<Enter mode="signin" />} />
-            <Route path="/hashtag/:hashtag" element={<Home />} />
-            <Route path="/user/:id" element={<Home />} />
+            <Route path="/hashtag/:hashtag" element={<HashtagPage posts={posts} setPosts={setPosts} hashtagName={hashtagName} setHashtagName={setHashtagName}/>} />
+            <Route path="/user/:id" element={<Home posts={posts} setPosts={setPosts} setHashtagName={setHashtagName}/>} />
           </Routes>
-          </AuthProvider>
-        </BrowserRouter>
-      </Linkr>
+        </AuthProvider>
+      </BrowserRouter>
+    </Linkr>
   );
 }
 

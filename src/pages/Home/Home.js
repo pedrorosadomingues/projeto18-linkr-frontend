@@ -10,11 +10,10 @@ import { useLocation } from "react-router-dom";
 
 Modal.setAppElement(document.getElementById('root'));
 
-export default function Home() {
+export default function Home({posts, setPosts, setHashtagName}) {
   const [form, setForm] = useState({ url: "", description: "" });
   const [isLoading, setIsLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const [posts, setPosts] = useState([]);
   const token = JSON.parse(localStorage.getItem('token'));
   const [user, setUser] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -151,7 +150,7 @@ export default function Home() {
 
   async function handlePost(e) {
     e.preventDefault();
-    let getHashtags = form.description.match(/#[a-zA-Z0-9]+/g);
+    let getHashtags = form.description.split(' ').filter((word) => word.startsWith('#'))
     // console.log('getHashtags:', getHashtags)
 
     setIsLoading(true);
@@ -272,8 +271,11 @@ export default function Home() {
                   setPostId(post.post_id);
                   openModal(post.post_id);
                 }}
+
+                setHashtagName={setHashtagName}
                 data-test="post"
-              >
+                >
+
 
               </Post> :
               location.pathname?.includes('user') ? null :
@@ -292,15 +294,18 @@ export default function Home() {
                     setPostId(post.post_id);
                     openModal(post.post_id);
                   }}
+
+                  setHashtagName={setHashtagName}
                   data-test="post"
-                >
+                  >
+
 
                 </Post>
           ))
             : loaded ? <NoPosts data-test="message">There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
       </LeftColumn>
-      <TrendingBar></TrendingBar>
+      <TrendingBar setHashtagName={setHashtagName} setPosts={setPosts} posts={posts}></TrendingBar>
     </Container>
   )
 }
