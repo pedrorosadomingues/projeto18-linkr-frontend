@@ -51,7 +51,7 @@ export default function TrendingBar({posts, setPosts, setHashtagName, loaded}) {
 
 const TrendingContainer = styled.div`
     width: 301px;
-    height: 100%;
+    /* height: 100%; */
     background-color: #171717;
     border-radius: 16px;
     padding: 20px;

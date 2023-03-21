@@ -138,3 +138,24 @@ export const LikeFilled = styled(AiFillHeart)`
   width:25px;
   height: 25px;
 `;
+
+export const TitlesStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const FollowButton = styled.button`
+  color: ${({isFollowing}) => isFollowing ? '#1877f2' : 'white'};
+  background-color: ${({isFollowing}) => isFollowing ? 'white' : '#1877f2'};
+  padding: 10px 30px 10px 30px;
+  position: absolute;
+  top: 180px;
+  left: calc(50% + 390px);
+  border: none;
+  border-radius: 2px;
+
+  &:disabled {
+    opacity: 0.3;
+  }
+`;
