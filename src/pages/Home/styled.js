@@ -146,12 +146,16 @@ export const TitlesStyled = styled.div`
 `;
 
 export const FollowButton = styled.button`
-  background-color: #1877f2;
-  color: white;
+  color: ${({isFollowing}) => isFollowing ? '#1877f2' : 'white'};
+  background-color: ${({isFollowing}) => isFollowing ? 'white' : '#1877f2'};
   padding: 10px 30px 10px 30px;
   position: absolute;
   top: 180px;
   left: calc(50% + 390px);
   border: none;
   border-radius: 2px;
+
+  &:disabled {
+    opacity: 0.3;
+  }
 `;

@@ -9,7 +9,6 @@ export default function Header({ user }) {
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState(null);
 
-
   const navigate = useNavigate();
 
   async function getUsers() {
@@ -19,10 +18,12 @@ export default function Header({ user }) {
       try {
         const config = {
           headers: {
-            authentication: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           }
         };
         const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-users`, {name: search}, config);
+
+        console.log('Users from search: ', data)
         setUsers(data);
 
       } catch (error) {
@@ -89,7 +90,7 @@ export default function Header({ user }) {
         display={(search.length > 3).toString()}
       >
         {
-          users?.map(({imageUrl, name, id}, index) => (
+          users?.map(({imageUrl, name, id, is_followed}, index) => (
             <UserFromSearch key={index} data-test="user-search" onClick={() => {
               navigate(`/user/${id}`)
               setSearch('')
@@ -98,6 +99,7 @@ export default function Header({ user }) {
             }}>
               <img alt="profile" src={imageUrl} />
               <button >{name}</button>
+              { is_followed === true && <p>• following</p>}
             </UserFromSearch>
           ))
         }

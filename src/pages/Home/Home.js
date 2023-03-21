@@ -14,6 +14,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
   const [form, setForm] = useState({ url: "", description: "" });
   const [isLoading, setIsLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const [followersQuantity, setFollowersQuantity] = useState(null);
   const token = JSON.parse(localStorage.getItem('token'));
   const [user, setUser] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -48,17 +49,45 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     },
   };
 
+  async function getFollowings() {
+    const token = JSON.parse(localStorage.getItem('token'));
+
+    if (token && token !== '') {
+      // setIsLoading(true);
+      try {
+        console.log('TOKEN: ', token)
+        const config = {
+          headers: {
+            authorization: `Bearer ${token}`,
+          }
+        };
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/followers`, config);
+        console.log('dattta', data)
+        setFollowersQuantity(Number(data[0].num_following));
+
+      } catch (error) {
+        console.log(error);
+
+        throw new Error(error);
+      } finally {
+        // setIsLoading(false);
+      }
+    }
+  };
+
   async function getIsFollowing(id) {
     const token = JSON.parse(localStorage.getItem('token'));
 
     if (token && token !== '') {
       try {
+        console.log('TOKEN: ', token)
         const config = {
           headers: {
-            authentication: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           }
         };
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/followers/${id}`, config);
+        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-follower-by-id`, { id }, config);
+        console.log(data)
         setIsFollowing(data.isFollowing);
 
       } catch (error) {
@@ -73,18 +102,24 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     const token = JSON.parse(localStorage.getItem('token'));
 
     if (token && token !== '') {
+      setIsLoading(true);
+
       try {
         const config = {
           headers: {
-            authentication: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           }
         };
-        await axios.post(`${process.env.REACT_APP_API_URL}/followers`, { following: user.id, followed: id }, config);
+        await axios.post(`${process.env.REACT_APP_API_URL}/followers`, {followed: id }, config);
 
       } catch (error) {
         console.log(error);
 
+        alert('Não foi possível executar a operação')
+
         throw new Error(error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -93,18 +128,24 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     const token = JSON.parse(localStorage.getItem('token'));
 
     if (token && token !== '') {
+      setIsLoading(true);
+
       try {
         const config = {
           headers: {
-            authentication: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           }
         };
-        await axios.delete(`${process.env.REACT_APP_API_URL}/followers/${id}`, { unfollowing: user.id }, config);
+        await axios.delete(`${process.env.REACT_APP_API_URL}/followers/${id}`, config);
 
       } catch (error) {
         console.log(error);
 
+        alert('Não foi possível executar a operação')
+
         throw new Error(error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -116,7 +157,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
       try {
         const config = {
           headers: {
-            authentication: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           }
         };
         const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/get-user-by-id`, { id }, config);
@@ -125,6 +166,8 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
       } catch (error) {
         console.log(error);
+
+        alert('Não foi possível executar a operação')
 
         throw new Error(error);
       }
@@ -137,12 +180,14 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
   useEffect(() => {
     const { pathname } = location;
+    getFollowings();
 
     if (pathname.includes('user')) {
       const index = pathname.lastIndexOf("/");
       const result = pathname.substring(index + 1);
 
       getUserById(Number(result));
+      getIsFollowing(Number(result));
     }
 
     axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
@@ -162,8 +207,8 @@ export default function Home({ posts, setPosts, setHashtagName }) {
       .catch((err) => {
         console.log(err)
         alert("An error occured while trying to fetch the posts, please refresh the page");
-      })
-  }, [loaded])
+      }).then(setLoaded(false))
+  }, [loaded, isLoading])
 
   async function handlePost(e) {
     e.preventDefault();
@@ -204,8 +249,8 @@ export default function Home({ posts, setPosts, setHashtagName }) {
       .catch((err) => {
         console.log(err)
         alert("An error occured while trying to fetch the posts, please refresh the page");
-      })
-  }, [loaded])
+      }).then(setLoaded(false))
+  }, [loaded, isLoading])
 
   async function handlePost(e) {
     e.preventDefault();
@@ -356,13 +401,18 @@ export default function Home({ posts, setPosts, setHashtagName }) {
                   setHashtagName={setHashtagName}
                 />
           ))
-            : loaded ? <NoPosts data-test="message">There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
+            : loaded ? <NoPosts data-test="message">{followersQuantity > 0 ? 'No posts found from your friends' : 'You don\'t follow anyone yet. Search for new friends!'}</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
       </LeftColumn>
       {
-        location.pathname?.includes('user') ?
+       ( location.pathname?.includes('user') && Number(location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1)) !== Number(user.id)) ?
           <FollowButton
             type="button"
+            disabled={isLoading}
+            isFollowing={isFollowing}
+            onClick={() => {
+              const id = location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1)
+              return isFollowing ? unfollow(id) : follow(id)}}
           >
             {isFollowing ? 'Unfollow' : 'Follow'}
           </FollowButton>
