@@ -1,4 +1,4 @@
-import { Container, ImageDiv, PostDiv, PostButton, PostForm, PostInput, PostsContainer, Title, NoPosts, LoadingParagraph } from "./styled"
+import { Container, ImageDiv, PostDiv, PostButton, PostForm, PostInput, PostsContainer, Title, NoPosts, LoadingParagraph, TitlesStyled, TrendingStyled, FollowButton } from "./styled"
 import axios from "axios"
 import styled from "styled-components";
 import Header from "../../components/Header";
@@ -19,6 +19,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [postId, setPostId] = useState(undefined);
   const [userFromQuery, setUserFromQuery] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
   const location = useLocation();
   let subtitle;
   const config = {
@@ -45,6 +46,67 @@ export default function Home({ posts, setPosts, setHashtagName }) {
       alignItems: 'center',
       fontSize: '26px'
     },
+  };
+
+  async function getIsFollowing(id) {
+    const token = JSON.parse(localStorage.getItem('token'));
+
+    if (token && token !== '') {
+      try {
+        const config = {
+          headers: {
+            authentication: `Bearer ${token}`,
+          }
+        };
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/followers/${id}`, config);
+        setIsFollowing(data.isFollowing);
+
+      } catch (error) {
+        console.log(error);
+
+        throw new Error(error);
+      }
+    }
+  };
+
+  async function follow(id) {
+    const token = JSON.parse(localStorage.getItem('token'));
+
+    if (token && token !== '') {
+      try {
+        const config = {
+          headers: {
+            authentication: `Bearer ${token}`,
+          }
+        };
+        await axios.post(`${process.env.REACT_APP_API_URL}/followers`, { following: user.id, followed: id }, config);
+
+      } catch (error) {
+        console.log(error);
+
+        throw new Error(error);
+      }
+    }
+  };
+
+  async function unfollow(id) {
+    const token = JSON.parse(localStorage.getItem('token'));
+
+    if (token && token !== '') {
+      try {
+        const config = {
+          headers: {
+            authentication: `Bearer ${token}`,
+          }
+        };
+        await axios.delete(`${process.env.REACT_APP_API_URL}/followers/${id}`, { unfollowing: user.id }, config);
+
+      } catch (error) {
+        console.log(error);
+
+        throw new Error(error);
+      }
+    }
   };
 
   async function getUserById(id) {
@@ -215,7 +277,9 @@ export default function Home({ posts, setPosts, setHashtagName }) {
       </Modal>
       <LeftColumn>
         <PostsContainer>
-          <Title>{location.pathname?.includes('user') ? userFromQuery?.name + "'s posts" : 'Timeline'}</Title>
+          <TitlesStyled>
+            <Title>{location.pathname?.includes('user') ? userFromQuery?.name + "'s posts" : 'Timeline'}</Title>
+          </TitlesStyled>
           {!location.pathname?.includes('user') && <PostDiv data-test="publish-box">
             <ImageDiv>
               <img src={user.imageUrl} alt="profile picture">
@@ -295,6 +359,16 @@ export default function Home({ posts, setPosts, setHashtagName }) {
             : loaded ? <NoPosts data-test="message">There are no posts yet</NoPosts> : <LoadingParagraph>Loading...</LoadingParagraph>}
         </PostsContainer>
       </LeftColumn>
+      {
+        location.pathname?.includes('user') ?
+          <FollowButton
+            type="button"
+          >
+            {isFollowing ? 'Unfollow' : 'Follow'}
+          </FollowButton>
+          : null
+      }
+
       <TrendingBar loaded={loaded} setHashtagName={setHashtagName} setPosts={setPosts} posts={posts}></TrendingBar>
     </Container>
   )
