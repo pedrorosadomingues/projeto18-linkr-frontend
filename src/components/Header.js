@@ -77,7 +77,7 @@ export default function Header({ user }) {
       >
 
       </WallStyled>
-      <h1 onClick={()=> navigate('/timeline')}>linkr</h1>
+      <h1><a href="/timeline">linkr</a></h1>
       <Input
         placeholder="Search for people"
         minLength={3}
@@ -181,6 +181,11 @@ const HeaderContainer = styled.header`
     align-items: center;
     padding: 0px 28px;
     z-index: 10;
+
+    a:visited {
+      color: white;
+    }
+
     h1 {
         font-family: 'Passion One', cursive;
         color: #FFF;
