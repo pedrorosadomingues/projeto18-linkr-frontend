@@ -198,7 +198,11 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
           <CommentInfo>
             <div>
               <strong>{comment.commenter_name}</strong>
-              {comment.commenter_id === post.user_id ? <span> • post's author</span> : ""}
+              {comment.commenter_id === post.user_id ? 
+              <span> • post's author</span> 
+              : user && user.following_ids.includes(comment.commenter_id) ?
+              <span> • following</span> : ""
+            }
             </div>
             <p>{comment.comment}</p>
           </CommentInfo>
