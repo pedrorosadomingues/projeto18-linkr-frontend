@@ -110,7 +110,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
             authorization: `Bearer ${token}`,
           }
         };
-        await axios.post(`${process.env.REACT_APP_API_URL}/followers`, {followed: id }, config);
+        await axios.post(`${process.env.REACT_APP_API_URL}/followers`, { followed: id }, config);
 
       } catch (error) {
         console.log(error);
@@ -199,7 +199,13 @@ export default function Home({ posts, setPosts, setHashtagName }) {
         alert("You are not logged!");
       })
 
-    const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
+    const isProfile = location.pathname?.includes('user');
+
+    const promise = axios.get(
+      `${process.env.REACT_APP_API_URL}/${isProfile ?
+        'user/' + location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1) :
+        'timeline'}`, config);
+
     promise.then((res) => {
       setPosts(res.data)
       setLoaded(true)
@@ -241,7 +247,13 @@ export default function Home({ posts, setPosts, setHashtagName }) {
         alert("You are not logged!");
       })
 
-    const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
+    const isProfile = location.pathname?.includes('user');
+
+    const promise = axios.get(
+      `${process.env.REACT_APP_API_URL}/${isProfile ?
+        'user/' + location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1) :
+        'timeline'}`, config);
+
     promise.then((res) => {
       setPosts(res.data)
       setLoaded(true)
@@ -405,14 +417,16 @@ export default function Home({ posts, setPosts, setHashtagName }) {
         </PostsContainer>
       </LeftColumn>
       {
-       ( location.pathname?.includes('user') && Number(location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1)) !== Number(user.id)) ?
+        (location.pathname?.includes('user') && Number(location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1)) !== Number(user.id)) ?
           <FollowButton
+            data-test="follow-btn"
             type="button"
             disabled={isLoading}
             isFollowing={isFollowing}
             onClick={() => {
               const id = location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1)
-              return isFollowing ? unfollow(id) : follow(id)}}
+              return isFollowing ? unfollow(id) : follow(id)
+            }}
           >
             {isFollowing ? 'Unfollow' : 'Follow'}
           </FollowButton>
