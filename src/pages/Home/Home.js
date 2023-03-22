@@ -192,6 +192,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
     axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
       .then((res) => {
+        console.log(res.data)
         setUser(res.data);
       })
       .catch((err) => {

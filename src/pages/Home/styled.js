@@ -121,10 +121,11 @@ export const LoadingParagraph = styled.p`
 `
 
 export const NoPosts = styled.p`
+  font-family: 'Lato';
   width: 100%;
   font-size: 30px;
   color: #fff;
-  line-height: 15px;
+  line-height: 50px;
   text-align: center;
 `
  export const LikeOutline = styled(AiOutlineHeart)`
