@@ -16,7 +16,6 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
   const [commentForm, setCommentForm] = useState({comment: ""})
   const [ newDescription, setNewDescription ] = useState(post.post_description.split(" "))
   let navigate = useNavigate();
-  console.log(post.commented_by_users)
 
   function tooltipElement(liked_by, like_count, liked, userId) {
 
@@ -45,7 +44,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
     // console.log('Editing??', editing)
     // const found = post.liked_by_users.find((obj) => obj.user_id === user.id)
     // if (found) setLiked(true)
-    const tooltip = tooltipElement(post.liked_by_users, post.like_count, liked, user.id)
+    const tooltip = tooltipElement(post.liked_by_users, post.liked_by_users.length, liked, user.id)
     setElement(tooltip)
    
 
@@ -151,11 +150,11 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
 
 
         <Likes data-tooltip-id="my-tooltip" data-tooltip-content={element} data-test="counter">
-          {post.like_count} {post.like_count === 1 ? "like" : "likes"}</Likes>
+          {post.liked_by_users.length} {post.liked_by_users.length === 1 ? "like" : "likes"}</Likes>
         <Tooltip id="my-tooltip" data-test="tooltip"/>
 
         <CommentsIcon onClick={()=> setShowComments(!showComments)}></CommentsIcon>
-        <Likes>{post.comments_count} {post.comments_count === 1 ? "comment" : "comments"}</Likes>
+        <Likes>{post.commented_by_users.length} {post.commented_by_users.length === 1 ? "comment" : "comments"}</Likes>
       </ImageDiv>
       <InfoDiv>
         <UserName data-test="username" onClick={() => {
@@ -193,7 +192,7 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       </MainDiv>
       <CommentsContainer show={showComments}>
         {post.commented_by_users.length && 
-        post.commented_by_users.map((comment, ind)=> 
+        [...post.commented_by_users].reverse().map((comment, ind)=> 
         <CommentDiv key={ind}>
           <img src={comment.commenter_image} alt="commenter_image"></img>
           <CommentInfo>
