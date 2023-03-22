@@ -1,4 +1,4 @@
-import { EditStyled, ImageDiv, InfoDescription, InfoDiv, Likes, MetadataDiv, MetaImg, MetaInfo, PostDiv, TrashStyled, UserName } from "./styled"
+import { CommentDiv, CommentInfo, CommentsContainer, CommentsIcon, EditStyled, ImageDiv, InfoDescription, InfoDiv, Likes, MainDiv, MetadataDiv, MetaImg, MetaInfo, PostCommentDiv, PostCommentIcon, PostDiv, TrashStyled, UserName } from "./styled"
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { LikeFilled, LikeOutline } from "../../pages/Home/styled";
@@ -9,11 +9,14 @@ import { Tooltip } from 'react-tooltip'
 export default function Post({ post, deletePost, postId, loaded, setLoaded, config, user, token, posts, setPosts, setHashtagName }) {
   const postRef = useRef(null);
   const [editing, setEditing] = useState(false);
+  const [commenting, setCommenting] = useState(false)
   const [liked, setLiked] = useState(false)
   const [element, setElement] = useState("")
+  const [showComments, setShowComments] = useState(false)
+  const [commentForm, setCommentForm] = useState({comment: ""})
   const [ newDescription, setNewDescription ] = useState(post.post_description.split(" "))
   let navigate = useNavigate();
-
+  console.log(post.commented_by_users)
 
   function tooltipElement(liked_by, like_count, liked, userId) {
 
@@ -53,10 +56,25 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       postRef.current.contentEditable = true;
       postRef.current.focus();
     }
-  }, [editing, loaded]);
+  }, [editing, loaded, commenting]);
 
-  function redirect(url) {
-    window.open(url, '_blank');
+
+  function handleCommentForm(e) {
+    setCommentForm({ ...commentForm, [e.target.name]: e.target.value })
+  }
+
+  async function makeComment(postId){
+    const body = commentForm
+    try {
+      setCommenting(true)
+      await axios.post(`${process.env.REACT_APP_API_URL}/comment/${postId}`, body, config);
+      setCommenting(false)
+      setLoaded(false)
+      setCommentForm({comment: ""})
+    } catch (error) {
+      alert("Não foi possível publicar seu comentário")
+      console.log(error)
+    }
   }
 
   async function likePost(postId) {
@@ -125,6 +143,8 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
       >
         <ion-icon name="pencil"></ion-icon>
       </EditStyled>
+      
+      <MainDiv>
       <ImageDiv>
         <img src={post.user_image_url} alt="Profile" />
         {post.liked_by_users.find((obj) => obj.user_id === user.id) ? <LikeFilled onClick={() => unlikePost(post.post_id)} data-test="like-btn"/> : <LikeOutline data-test="like-btn" onClick={() => likePost(post.post_id)} />}
@@ -133,6 +153,9 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
         <Likes data-tooltip-id="my-tooltip" data-tooltip-content={element} data-test="counter">
           {post.like_count} {post.like_count === 1 ? "like" : "likes"}</Likes>
         <Tooltip id="my-tooltip" data-test="tooltip"/>
+
+        <CommentsIcon onClick={()=> setShowComments(!showComments)}></CommentsIcon>
+        <Likes>{post.comments_count} {post.comments_count === 1 ? "comment" : "comments"}</Likes>
       </ImageDiv>
       <InfoDiv>
         <UserName data-test="username" onClick={() => {
@@ -167,6 +190,37 @@ export default function Post({ post, deletePost, postId, loaded, setLoaded, conf
           <MetaImg src={post.metadata_info.image} alt="metadata_image"></MetaImg>
         </MetadataDiv>
       </InfoDiv>
+      </MainDiv>
+      <CommentsContainer show={showComments}>
+        {post.commented_by_users.length && 
+        post.commented_by_users.map((comment, ind)=> 
+        <CommentDiv key={ind}>
+          <img src={comment.commenter_image} alt="commenter_image"></img>
+          <CommentInfo>
+            <div>
+              <strong>{comment.commenter_name}</strong>
+              {comment.commenter_id === post.user_id ? <span> • post's author</span> : ""}
+            </div>
+            <p>{comment.comment}</p>
+          </CommentInfo>
+        </CommentDiv>)}
+        <PostCommentDiv>
+          <img src={user.imageUrl} alt="pfp"></img>
+          <div>
+            <input 
+               name="comment"
+               placeholder="write a comment..."
+               type="text"
+               required
+               disabled={commenting}
+               value={commentForm.comment}
+               onChange={handleCommentForm}
+            />
+              <PostCommentIcon onClick={()=> makeComment(postId)}></PostCommentIcon>
+          </div>
+        </PostCommentDiv>
+     </CommentsContainer>
     </PostDiv>
+    
   );
 }

@@ -1,17 +1,25 @@
 import styled from "styled-components"
+import { AiOutlineComment } from "react-icons/ai";
+import {IoPaperPlaneOutline} from "react-icons/io5";
 
 export const PostDiv = styled.div`
   background: #171717;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   width: 100%;
-  padding: 20px 23px;
-  display:flex;
+  display: flex;
+  flex-direction: column;
   font-family: 'Lato';
   position: relative;
+  
   @media (max-width: 600px){
     border-radius: 0px;
 }
+`
+
+export const MainDiv = styled.div`
+    display:flex;
+    padding: 20px 23px;
 `
 
 export const ImageDiv = styled.div`
@@ -114,6 +122,7 @@ export const MetaInfo = styled.div`
 export const TrashStyled = styled.button`
   position: absolute;
   right: 15px;
+  top:20px;
   color: white;
   background-color: transparent;
   border: none;
@@ -124,9 +133,110 @@ export const TrashStyled = styled.button`
 export const EditStyled = styled.button`
   position: absolute;
   right: 55px;
+  top:20px;
   color: white;
   background-color: transparent;
   border: none;
   font-size: 20px;
   display: ${({display}) => display === 'true' ? 'block' : 'none'};
 `;
+
+export const CommentsIcon = styled(AiOutlineComment)`
+  color: #ffffff;
+  margin-top: 10px;
+  width:25px;
+  height: 25px;
+  & :hover{
+    cursor: pointer;
+  }
+`;
+
+export const CommentsContainer = styled.div`
+  width:100%;
+  display: ${props => props.show ? "flex": "none"};
+  flex-direction: column;
+  background: #1E1E1E;
+  border-radius: 16px;
+  padding: 16px 20px;
+`
+export const CommentDiv = styled.div`
+  width:100%;
+  display: flex;
+  column-gap: 18px;
+  margin-bottom:16px;
+  border-bottom: 1px solid #353535;
+  transform: rotate(-0.1deg);
+  & img{
+    width: 39px;
+    height: 39px;
+    border-radius: 26.5px;
+  }
+`
+
+export const CommentInfo = styled.div`
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+  row-gap: 5px;
+  font-family: 'Lato';
+  font-size: 14px;
+  line-height: 17px;
+  & strong{
+    font-weight: 700;
+    color: #ffffff
+  }
+  & span {
+    color: #565656;
+  }
+  & p{
+    color: #ACACAC;
+    margin-bottom: 16px;
+  }
+`
+
+export const PostCommentDiv = styled.div`
+  width:100%;
+  margin-top: 4px;
+  display: flex;
+  column-gap: 14px;
+  & img{
+    width: 39px;
+    height: 39px;
+    border-radius: 26.5px;
+  }
+  & div {
+    background: #252525;
+    width:100%;
+    border-radius: 8px;
+    display:flex;
+    align-items: center;
+    padding: 0px 12px;
+  }
+  & input {
+    background: #252525;
+    border: none;
+    width: 100%;
+    font-family: 'Lato';
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    & ::placeholder{
+      font-style: italic;
+      color: #575757;
+    }
+    &:focus{
+      outline: none;
+    }
+  }
+`
+
+export const PostCommentIcon = styled(IoPaperPlaneOutline)`
+  width: 18px;
+  height: 18px;
+  color: #ffffff;
+  & :hover{
+    cursor: pointer;
+  }
+`
