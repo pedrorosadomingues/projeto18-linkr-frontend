@@ -426,10 +426,10 @@ export default function Home({ posts, setPosts, setHashtagName }) {
           </PostDiv>}
         </PostsContainer>
         <PostsContainer>
-          {posts.length ? posts.map((post) => (
+          {posts.length ? posts.map((post, index) => (
             location.pathname?.includes('user') && location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1) === String(post.user_id) ?
               <Post
-                key={post.post_id}
+                key={post.post_id + (post?.shared_by_user_name ?? 'null') + index}
                 user={user}
                 token={token}
                 loaded={loaded}
@@ -453,7 +453,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
               :
               location.pathname?.includes('user') ? null :
                 <Post
-                  key={post.post_id}
+                  key={post.post_id + (post?.shared_by_user_name ?? 'null') + index}
                   user={user}
                   token={token}
                   loaded={loaded}
