@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { AiOutlineComment } from "react-icons/ai";
 import {IoPaperPlaneOutline} from "react-icons/io5";
+import { BiRepost } from "react-icons/bi";
 
 export const PostDiv = styled.div`
   background: #171717;
@@ -240,3 +241,17 @@ export const PostCommentIcon = styled(IoPaperPlaneOutline)`
     cursor: pointer;
   }
 `
+
+export const PostedBy = styled.h2`
+  background-color: #1e1e1e;
+  padding: 10px;
+  color: white;
+`;
+
+export const Shares = styled(BiRepost)`
+  font-size: 25px;
+  color: #ffffff;
+  & :hover{
+    cursor: pointer;
+  }
+`;

@@ -18,6 +18,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
   const token = JSON.parse(localStorage.getItem('token'));
   const [user, setUser] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modal2IsOpen, setIsOpen2] = useState(false);
   const [postId, setPostId] = useState(undefined);
   const [userFromQuery, setUserFromQuery] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -237,6 +238,10 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     setIsOpen(true);
   }
 
+  function openModal2(id) {
+    setIsOpen2(true);
+  }
+
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
       .then((res) => {
@@ -255,7 +260,15 @@ export default function Home({ posts, setPosts, setHashtagName }) {
         'user/' + location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1) :
         'timeline'}`, config);
 
+    const promise2 = axios.get(
+      `${process.env.REACT_APP_API_URL}/${isProfile ?
+        'user/' + location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1) :
+        'shares'}`, config);
+    promise2.then(r => console.log('DATA FROM SHARES: ', r));
+
     promise.then((res) => {
+      console.log('POSTS INFO: ', res.data)
+      console.log('USER INFO: ', user)
       setPosts(res.data)
       setLoaded(true)
     })
@@ -294,11 +307,20 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     // references are now sync'd and can be accessed.
     subtitle.style.color = 'white';
   }
+  function afterOpenModal2() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = 'white';
+  }
 
   function closeModal(hasError) {
     if (hasError) return alert('Não foi possível excluir o post');
     setPostId(undefined);
     setIsOpen(false);
+  }
+  function closeModal2(hasError) {
+    if (hasError) return alert('Não foi possível repostar o post');
+    setPostId(undefined);
+    setIsOpen2(false);
   }
 
   async function deletePost() {
@@ -311,6 +333,19 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     setLoaded(false);
     closeModal();
   };
+
+  async function sharePost() {
+    try {
+      setLoaded(true);
+      await axios.post(`${process.env.REACT_APP_API_URL}/shares`, { postId }, config);
+      setLoaded(false);
+    } catch (error) {
+      console.log(error)
+      closeModal2(true);
+    }
+    setLoaded(false);
+    closeModal2();
+  }
 
   return (
     <Container>
@@ -331,6 +366,24 @@ export default function Home({ posts, setPosts, setHashtagName }) {
         <div>
           <NoDeleteStyled onClick={() => closeModal(false)} data-test="cancel">No, go back</NoDeleteStyled>
           <DeleteStyled onClick={() => deletePost()} data-test="confirm">Yes, delete it</DeleteStyled>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={modal2IsOpen}
+        onAfterOpen={afterOpenModal2}
+        onRequestClose={() => closeModal2(false)}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Do you want to re-post
+          this link?</h2>
+        <h2>{loaded && 'Sharing post...'}</h2>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div>
+          <NoDeleteStyled onClick={() => closeModal2(false)}>No, cancel</NoDeleteStyled>
+          <DeleteStyled onClick={() => sharePost()}>Yes, share!</DeleteStyled>
         </div>
       </Modal>
       <LeftColumn>
@@ -390,6 +443,10 @@ export default function Home({ posts, setPosts, setHashtagName }) {
                   setPostId(post.post_id);
                   openModal(post.post_id);
                 }}
+                sharePost={() => {
+                  setPostId(post.post_id);
+                  openModal2(post.post_id);
+                }}
 
                 setHashtagName={setHashtagName}
               />
@@ -409,6 +466,10 @@ export default function Home({ posts, setPosts, setHashtagName }) {
                   deletePost={() => {
                     setPostId(post.post_id);
                     openModal(post.post_id);
+                  }}
+                  sharePost={() => {
+                    setPostId(post.post_id);
+                    openModal2(post.post_id);
                   }}
 
                   setHashtagName={setHashtagName}
