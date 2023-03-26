@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
+import { TfiReload } from "react-icons/tfi";
 
 export const Container = styled.div`
   width: 100vw;
@@ -159,4 +160,33 @@ export const FollowButton = styled.button`
   &:disabled {
     opacity: 0.3;
   }
+`;
+
+export const NewPostsButton = styled.button`
+  width: 100%;
+  height: 61px;
+  border: none;
+  display: flex;
+  background: #1877F2;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  font-family: 'Lato';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #FFFFFF;
+  margin-bottom: 17px;
+  justify-content:center;
+  align-items:center;
+  &:hover{
+    cursor: pointer;
+    background: #5499f2;
+  }
+`
+export const ReloadIcon = styled(TfiReload)`
+  color: #ffffff;
+  width:18px;
+  height: 18px;
+  margin-left: 14px;
+  stroke-width: 1;
 `;

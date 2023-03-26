@@ -1,4 +1,4 @@
-import { Container, ImageDiv, PostDiv, PostButton, PostForm, PostInput, PostsContainer, Title, NoPosts, LoadingParagraph, TitlesStyled, TrendingStyled, FollowButton } from "./styled"
+import { Container, ImageDiv, PostDiv, PostButton, PostForm, PostInput, PostsContainer, Title, NoPosts, LoadingParagraph, TitlesStyled, TrendingStyled, FollowButton, NewPostsButton, ReloadIcon } from "./styled"
 import axios from "axios"
 import styled from "styled-components";
 import Header from "../../components/Header";
@@ -7,6 +7,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import TrendingBar from "../../components/TrendingBar";
 import Modal from 'react-modal';
 import { useLocation } from "react-router-dom";
+import useInterval from 'use-interval';
 
 Modal.setAppElement(document.getElementById('root'));
 
@@ -22,6 +23,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
   const [postId, setPostId] = useState(undefined);
   const [userFromQuery, setUserFromQuery] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [difference, setDifference] = useState(0);
   const location = useLocation();
   let subtitle;
   const config = {
@@ -56,14 +58,14 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     if (token && token !== '') {
       // setIsLoading(true);
       try {
-        console.log('TOKEN: ', token)
+        //console.log('TOKEN: ', token)
         const config = {
           headers: {
             authorization: `Bearer ${token}`,
           }
         };
         const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/followers`, config);
-        console.log('dattta', data)
+        //console.log('dattta', data)
         setFollowersQuantity(Number(data[0].num_following));
 
       } catch (error) {
@@ -81,7 +83,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
     if (token && token !== '') {
       try {
-        console.log('TOKEN: ', token)
+        //console.log('TOKEN: ', token)
         const config = {
           headers: {
             authorization: `Bearer ${token}`,
@@ -193,7 +195,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
     axios.get(`${process.env.REACT_APP_API_URL}/get-user`, config)
       .then((res) => {
-        console.log(res.data)
+        //console.log(res.data)
         setUser(res.data);
       })
       .catch((err) => {
@@ -210,6 +212,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
 
     promise.then((res) => {
       setPosts(res.data)
+      setDifference(0)
       setLoaded(true)
     })
       .catch((err) => {
@@ -267,8 +270,8 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     promise2.then(r => console.log('DATA FROM SHARES: ', r));
 
     promise.then((res) => {
-      console.log('POSTS INFO: ', res.data)
-      console.log('USER INFO: ', user)
+      //console.log('POSTS INFO: ', res.data)
+      //console.log('USER INFO: ', user)
       setPosts(res.data)
       setLoaded(true)
     })
@@ -287,7 +290,7 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     const body = { ...form }
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, config);
-      console.log("funcionou");
+      //console.log("funcionou");
       if (getHashtags?.length > 0) {
         getHashtags.forEach(async (h) => {
           await axios.post(`${process.env.REACT_APP_API_URL}/hashtag`, { h }, config)
@@ -302,6 +305,21 @@ export default function Home({ posts, setPosts, setHashtagName }) {
       alert("There was an error publishing your link")
     }
   }
+
+  useInterval(async () => {
+    console.log("New interval")
+    try {
+      const newPosts = await axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
+    
+      if (newPosts.data.length > posts.length){
+        setDifference(newPosts.data.length - posts.length)
+      }
+    } catch (error) {
+      console.log(error)
+      alert("Error in getting new posts")
+    }
+    
+  }, 15000);
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -382,8 +400,8 @@ export default function Home({ posts, setPosts, setHashtagName }) {
         <br></br>
         <br></br>
         <div>
-          <NoDeleteStyled onClick={() => closeModal2(false)}>No, cancel</NoDeleteStyled>
-          <DeleteStyled onClick={() => sharePost()}>Yes, share!</DeleteStyled>
+          <NoDeleteStyled data-test="cancel" onClick={() => closeModal2(false)}>No, cancel</NoDeleteStyled>
+          <DeleteStyled data-test="confirm" onClick={() => sharePost()}>Yes, share!</DeleteStyled>
         </div>
       </Modal>
       <LeftColumn>
@@ -425,6 +443,9 @@ export default function Home({ posts, setPosts, setHashtagName }) {
             </PostForm>
           </PostDiv>}
         </PostsContainer>
+        {difference > 0 ? <NewPostsButton data-test="load-btn" onClick={()=> setLoaded(false)}>
+          {difference} new posts, load more! <ReloadIcon></ReloadIcon>
+        </NewPostsButton> : ""}
         <PostsContainer>
           {posts.length ? posts.map((post, index) => (
             location.pathname?.includes('user') && location.pathname.substring(location?.pathname?.lastIndexOf("/") + 1) === String(post.user_id) ?
