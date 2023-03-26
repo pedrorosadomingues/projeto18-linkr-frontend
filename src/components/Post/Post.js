@@ -159,11 +159,11 @@ export default function Post({ post, deletePost, sharePost, postId, loaded, setL
           {post.liked_by_users.length} {post.liked_by_users.length === 1 ? "like" : "likes"}</Likes>
         <Tooltip id="my-tooltip" data-test="tooltip"/>
 
-        <CommentsIcon onClick={()=> setShowComments(!showComments)}></CommentsIcon>
-        <Likes>{post.commented_by_users.length} {post.commented_by_users.length === 1 ? "comment" : "comments"}</Likes>
+        <CommentsIcon data-test="comment-btn" onClick={()=> setShowComments(!showComments)}></CommentsIcon>
+        <Likes data-test="comment-counter">{post.commented_by_users.length} {post.commented_by_users.length === 1 ? "comment" : "comments"}</Likes>
 
-        <Shares onClick={sharePost}></Shares>
-        <Likes>{post.shares_count} {post.shares_count === 1 ? "re-post" : "re-posts"}</Likes>
+        <Shares data-test="repost-btn" onClick={sharePost}></Shares>
+        <Likes data-test="repost-counter">{post.shares_count} {post.shares_count === 1 ? "re-post" : "re-posts"}</Likes>
       </ImageDiv>
       <InfoDiv>
         <UserName data-test="username" onClick={() => {
@@ -199,10 +199,10 @@ export default function Post({ post, deletePost, sharePost, postId, loaded, setL
         </MetadataDiv>
       </InfoDiv>
       </MainDiv>
-      <CommentsContainer show={showComments}>
+      <CommentsContainer data-test="comment-box" show={showComments}>
         {post.commented_by_users.length && 
         [...post.commented_by_users].reverse().map((comment, ind)=> 
-        <CommentDiv key={ind}>
+        <CommentDiv data-test="comment" key={ind}>
           <img src={comment.commenter_image} alt="commenter_image"></img>
           <CommentInfo>
             <div>
@@ -219,7 +219,8 @@ export default function Post({ post, deletePost, sharePost, postId, loaded, setL
         <PostCommentDiv>
           <img src={user.imageUrl} alt="pfp"></img>
           <div>
-            <input 
+            <input
+               data-test="comment-input"
                name="comment"
                placeholder="write a comment..."
                type="text"
@@ -228,7 +229,7 @@ export default function Post({ post, deletePost, sharePost, postId, loaded, setL
                value={commentForm.comment}
                onChange={handleCommentForm}
             />
-              <PostCommentIcon onClick={()=> makeComment(postId)}></PostCommentIcon>
+              <PostCommentIcon data-test="comment-submit" onClick={()=> makeComment(postId)}></PostCommentIcon>
           </div>
         </PostCommentDiv>
      </CommentsContainer>

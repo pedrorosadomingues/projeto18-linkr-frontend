@@ -87,7 +87,7 @@ export default function Header({ user }) {
         data-test="search"
       />
       <UsersFromSearch
-        display={(search.length > 3).toString()}
+        display={(search.length >= 3).toString()}
       >
         {
           users?.map(({imageUrl, name, id, is_followed}, index) => (
