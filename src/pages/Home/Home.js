@@ -310,10 +310,14 @@ export default function Home({ posts, setPosts, setHashtagName }) {
     console.log("New interval")
     try {
       const newPosts = await axios.get(`${process.env.REACT_APP_API_URL}/timeline`, config)
-    
-      if (newPosts.data.length > posts.length){
-        setDifference(newPosts.data.length - posts.length)
+      const newestPost = newPosts.data[0]
+      const oldNewestPost = posts[0]
+   
+      if(newestPost.post_id !== oldNewestPost.post_id){
+        console.log("há diferença")
+          setDifference(-(0 - newPosts.data.findIndex(x => x.post_id === oldNewestPost.post_id)))
       }
+  
     } catch (error) {
       console.log(error)
       alert("Error in getting new posts")
